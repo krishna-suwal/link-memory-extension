@@ -1,0 +1,13 @@
+{
+  "manifest_version": 2,
+
+  "name": "Link Memory",
+  "description": "Instead of keeping tabs pinned, add them here. You can easily add, access, remove the tabs or links you save here. You can also open the saved links in new tab, copy the link, or restore the deleted links. Also, you can double click the link to open it on same tab (the active tab)",
+  "version": "0.1.0",
+
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": ["activeTab", "storage", "tabs", "*://*/*"]
+}
