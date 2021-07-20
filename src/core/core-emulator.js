@@ -12,6 +12,19 @@ function getFeatureImage() {
 }
 
 const coreEmulator = {
+	element: {
+		scrollIntoView: function (selector) {
+			let element = selector;
+
+			if (typeof element === 'string') {
+				element = document.querySelector(selector);
+			}
+			if (typeof element !== 'object') {
+				return;
+			}
+			element.scrollIntoView({ behavior: 'smooth' });
+		},
+	},
 	tabs: {
 		getAll: async function () {
 			return [

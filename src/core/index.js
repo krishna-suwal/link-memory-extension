@@ -1,6 +1,19 @@
 import getTabFeatureImage from '../helpers/getTabFeatureImage';
 
 const core = {
+	element: {
+		scrollIntoView: function (selector) {
+			let element = selector;
+
+			if (typeof element === 'string') {
+				element = document.querySelector(selector);
+			}
+			if (!element || typeof element !== 'object') {
+				return;
+			}
+			element.scrollIntoView({ behavior: 'smooth' });
+		},
+	},
 	tabs: {
 		getAll: function () {
 			return new Promise((resolve, reject) => {
