@@ -5,6 +5,8 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import preprocess from 'svelte-preprocess'; // Also needs node-sass npm package to be installed
+import path from 'path';
+import { writeFileSync } from 'fs';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -39,7 +41,7 @@ export default {
 		sourcemap: true,
 		format: 'iife',
 		name: 'app',
-		file: 'public/build/popup-view.js',
+		file: 'public/assets/js/popup-view.js',
 	},
 	plugins: [
 		svelte({
@@ -51,7 +53,14 @@ export default {
 		}),
 		// we'll extract any component CSS out into
 		// a separate file - better for performance
-		css({ output: 'bundle.css' }),
+		css({
+			output: function (styles, styleNodes) {
+				writeFileSync(
+					path.resolve(__dirname, 'public/assets/css/popup-view.css'),
+					styles
+				);
+			},
+		}),
 
 		// If you have external dependencies installed from
 		// npm, you'll most likely need these plugins. In
