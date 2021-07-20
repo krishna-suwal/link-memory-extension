@@ -1,10 +1,11 @@
 <script>
+	export let id = '';
 	export let label = '';
 	export let url = '';
 	export let thumbnail = '';
 </script>
 
-<div class="link-item">
+<div class="link-item" {id}>
 	{#if thumbnail && typeof thumbnail === 'string'}
 		<div class="thumbnail">
 			<img src={thumbnail} />

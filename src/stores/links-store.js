@@ -31,13 +31,15 @@ export const links = (function () {
 		subscribe,
 		update,
 		add: function ({ label, url, image_url }) {
+			const newItem = { id: uuidv4(), label, url, image_url };
+
 			update((list) => {
-				const newItem = { id: uuidv4(), label, url, image_url };
 				const newLinks = [...list, newItem];
 
 				storageManager.set('limem_links', newLinks);
 				return newLinks;
 			});
+			return newItem;
 		},
 		remove: function (id) {
 			update((list) => {
@@ -89,7 +91,7 @@ export const linksTrash = (function () {
 
 			if (!lastItem) return;
 
-			links.add(lastItem);
+			return links.add(lastItem);
 		},
 	};
 })();

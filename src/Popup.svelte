@@ -23,13 +23,25 @@
 		linksTrash.clear();
 		alert('Cleared Trash!');
 	};
-	const onClickRestore = () => {
+	const onClickRestore = async () => {
 		if ($linksTrash.length === 0) {
 			return alert('Nothing to restore!');
 		}
-		linksTrash.restore();
+		const { id } = await linksTrash.restore();
+
+		setTimeout(() => {
+			lm.element.scrollIntoView(`#saved-link-${id}`);
+		}, 200);
 	};
-	const onAddCurrentTab = () => lm.tabs.getActive().then(links.add);
+	const onAddCurrentTab = () => {
+		lm.tabs.getActive().then((tab) => {
+			const { id } = links.add(tab);
+
+			setTimeout(() => {
+				lm.element.scrollIntoView(`#saved-link-${id}`);
+			}, 200);
+		});
+	};
 </script>
 
 <div class="header">
@@ -57,7 +69,7 @@
 			</Row>
 		{:else}
 			{#each $links as { id, label, url, image_url } (id)}
-				<LinkItem {label} thumbnail={image_url} {url}>
+				<LinkItem id={`saved-link-${id}`} {label} thumbnail={image_url} {url}>
 					<svelte:fragment slot="actions">
 						<div
 							class="action"
@@ -93,7 +105,7 @@
 		</div>
 		<div class="list">
 			{#each openTabs as { id, label, url, image_url } (id)}
-				<LinkItem {label} thumbnail={image_url} {url}>
+				<LinkItem id={`open-tab-${id}`} {label} thumbnail={image_url} {url}>
 					<svelte:fragment slot="actions">
 						<div
 							class="action"
