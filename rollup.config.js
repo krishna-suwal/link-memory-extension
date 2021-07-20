@@ -34,12 +34,12 @@ function serve() {
 }
 
 export default {
-	input: 'src/main.js',
+	input: 'src/popup-view.js',
 	output: {
 		sourcemap: true,
 		format: 'iife',
 		name: 'app',
-		file: 'public/build/bundle.js',
+		file: 'public/build/popup-view.js',
 	},
 	plugins: [
 		svelte({
