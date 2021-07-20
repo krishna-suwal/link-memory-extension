@@ -31,3 +31,5 @@ temp
 public/assets/css/popup-view.css
 public/assets/js/popup-view.js
 public/assets/js/popup-view.js.map
+*.zip
+dist
