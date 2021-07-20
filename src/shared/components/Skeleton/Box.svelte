@@ -23,6 +23,7 @@
 <style>
 	.skeleton-box {
 		border-radius: 5px;
-		background: #525252;
+		/* background: #525252; */
+		background: #f3f3f3;
 	}
 </style>
