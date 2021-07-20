@@ -1,10 +1,10 @@
-import App from './App.svelte';
+import './core/init-storage-manager';
+import './core/init-core';
 
-const app = new App({
+import Popup from './Popup.svelte';
+
+const app = new Popup({
 	target: document.body,
-	props: {
-		name: 'world'
-	}
 });
 
 export default app;
