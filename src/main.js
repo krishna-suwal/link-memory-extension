@@ -1,9 +1,9 @@
 import './core/init-storage-manager';
 import './core/init-core';
 
-import Popup from './Popup.svelte';
+import PopupView from './PopupView';
 
-const app = new Popup({
+const app = new PopupView({
 	target: document.body,
 });
 
