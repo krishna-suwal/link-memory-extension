@@ -1,26 +1,49 @@
 {
   "name": "svelte-app",
   "version": "1.0.0",
-  "private": true,
+  "description": "Store your tabs and access easily",
+  "license": "MIT",
+  "homepage": "https://github.com/krishna-suwal/link-memory-extension#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krishna-suwal/link-memory-extension.git"
+  },
+  "bugs": {
+    "url": "https://github.com/krishna-suwal/link-memory-extension/issues"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
-    "start": "sirv public --no-clear"
+    "svelte:build": "rollup -c",
+    "svelte:dev": "rollup -c -w",
+    "svelte:start": "sirv public --no-clear",
+    "build": "npx rimraf *.zip ./dist && node ./scripts/prepare.js && yarn install && yarn bundle",
+    "rebuild-logos": "node ./scripts/build-icons.js",
+    "bundle": "yarn bundle-edge && yarn bundle-chrome && yarn bundle-firefox",
+    "bundle-edge": "7z a -tzip link-memory-edge-extension.zip dist",
+    "bundle-chrome": "7z a -tzip link-memory-chrome-extension.zip dist",
+    "bundle-firefox": "web-ext -s ./dist/ -n link-memory-firefox-extension.zip -a . build --overwrite-dest",
+    "clean": "rimraf *.zip ./dist"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
+    "make-dir": "^3.1.0",
+    "node-sass": "^6.0.1",
+    "rimraf": "^3.0.2",
     "rollup": "^2.3.4",
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^7.0.0",
     "rollup-plugin-terser": "^7.0.0",
-    "svelte": "^3.0.0"
+    "sharp": "^0.28.3",
+    "sirv-cli": "^1.0.0",
+    "svelte": "^3.0.0",
+    "svelte-preprocess": "^4.7.4"
   },
   "dependencies": {
-    "node-sass": "^6.0.1",
-    "sirv-cli": "^1.0.0",
-    "svelte-preprocess": "^4.7.4",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "web-ext": "6.2.0"
   }
 }
