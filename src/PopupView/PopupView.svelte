@@ -25,6 +25,13 @@
 			}, 200);
 		});
 	};
+	const getAddOpenTabHandler = (tab) => () => {
+		const { id } = links.add(tab);
+
+		setTimeout(() => {
+			lm.element.scrollIntoView(`#saved-link-${id}`);
+		}, 200);
+	};
 </script>
 
 <Header />
@@ -83,7 +90,7 @@
 						<div
 							class="action"
 							title="Add"
-							on:click={() => links.add({ label, url, image_url })}
+							on:click={getAddOpenTabHandler({ id, label, url, image_url })}
 						>
 							<PlusIcon />
 						</div>
