@@ -2,6 +2,7 @@
   "name": "svelte-app",
   "version": "1.0.0",
   "description": "Store your tabs and access easily",
+  "author": "Krishna Suwal",
   "license": "MIT",
   "homepage": "https://github.com/krishna-suwal/link-memory-extension#readme",
   "repository": {
