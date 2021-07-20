@@ -26,3 +26,5 @@ yarn-error.log*
 /public/build/
 
 .DS_Store
+
+temp
