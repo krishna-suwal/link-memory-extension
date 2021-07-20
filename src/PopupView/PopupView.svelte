@@ -15,6 +15,7 @@
 
 	onMount(() => {
 		lm.tabs.getAll().then((v) => (openTabs = v));
+		lm.init_clipboard_js();
 	});
 	const onAddCurrentTab = () => {
 		lm.tabs.getActive().then((tab) => {
@@ -22,6 +23,7 @@
 
 			setTimeout(() => {
 				lm.element.scrollIntoView(`#saved-link-${id}`);
+				lm.init_clipboard_js();
 			}, 200);
 		});
 	};
@@ -30,6 +32,7 @@
 
 		setTimeout(() => {
 			lm.element.scrollIntoView(`#saved-link-${id}`);
+			lm.init_clipboard_js();
 		}, 200);
 	};
 </script>
@@ -60,11 +63,11 @@
 						</div>
 						<div
 							title="Copy"
-							class="action"
+							class="action copy-text tooltip"
 							data-clipboard-text={url}
-							aria-label="Copied!"
 						>
 							<CopyLinkIcon />
+							<span class="tooltiptext">Copied!</span>
 						</div>
 						<div
 							title="Delete"
