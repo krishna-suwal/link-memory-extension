@@ -19,7 +19,6 @@ class StorageManager {
 			const storage = window.storage
 				? window.storage.StorageArea
 				: chrome.storage;
-			console.log('yo', storage);
 
 			storage.sync.get([key], function (result) {
 				if (typeof result[key] !== 'string') return resolve(_default);
