@@ -16,7 +16,12 @@ function callUpdateListeners(name, ...args) {
 class StorageManager {
 	get(key, _default = null) {
 		return new Promise((resolve, reject) => {
-			chrome.storage.sync.get([key], function (result) {
+			const storage = window.storage
+				? window.storage.StorageArea
+				: chrome.storage;
+			console.log('yo', storage);
+
+			storage.sync.get([key], function (result) {
 				if (typeof result[key] !== 'string') return resolve(_default);
 
 				try {
@@ -33,7 +38,11 @@ class StorageManager {
 		return new Promise((resolve, reject) => {
 			if (typeof value !== 'string') value = JSON.stringify(value);
 
-			chrome.storage.sync.set({ [key]: value }, () => {
+			const storage = window.storage
+				? window.storage.StorageArea
+				: chrome.storage;
+
+			storage.sync.set({ [key]: value }, () => {
 				_this.get(key).then((value) => {
 					callUpdateListeners(key, value);
 				});
