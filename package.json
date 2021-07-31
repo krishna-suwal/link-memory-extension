@@ -25,13 +25,18 @@
     "bundle-edge": "7z a -tzip link-memory-edge-extension.zip dist",
     "bundle-chrome": "7z a -tzip link-memory-chrome-extension.zip dist",
     "bundle-firefox": "web-ext -s ./dist/ -n link-memory-firefox-extension.zip -a . build --overwrite-dest",
-    "clean": "rimraf *.zip ./dist"
+    "clean": "rimraf *.zip ./dist",
+    "lint": "eslint ./src",
+    "prettier": "prettier --check ./src ./scripts"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
+    "babel-eslint": "10.1.0",
+    "eslint": "7.32.0",
     "make-dir": "^3.1.0",
     "node-sass": "^6.0.1",
+    "prettier": "2.3.2",
     "rimraf": "^3.0.2",
     "rollup": "^2.3.4",
     "rollup-plugin-css-only": "^3.1.0",
@@ -41,10 +46,10 @@
     "sharp": "^0.28.3",
     "sirv-cli": "^1.0.0",
     "svelte": "^3.0.0",
-    "svelte-preprocess": "^4.7.4"
+    "svelte-preprocess": "^4.7.4",
+    "web-ext": "6.2.0"
   },
   "dependencies": {
-    "uuid": "^8.3.2",
-    "web-ext": "6.2.0"
+    "uuid": "^8.3.2"
   }
 }
