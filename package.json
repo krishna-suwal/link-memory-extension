@@ -27,7 +27,8 @@
     "bundle-firefox": "web-ext -s ./dist/ -n link-memory-firefox-extension.zip -a . build --overwrite-dest",
     "clean": "rimraf *.zip ./dist",
     "lint": "eslint ./src",
-    "prettier": "prettier --check ./src ./scripts"
+    "prettier": "prettier --check ./src ./scripts",
+    "check:code": "yarn lint && yarn prettier"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
