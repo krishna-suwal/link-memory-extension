@@ -5,12 +5,16 @@
 	import { linksTrash } from '../../stores/links-store';
 
 	let openTabs = [];
+	const githubIconUrl =
+		'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/600px-Octicons-mark-github.svg.png';
 
 	onMount(() => {
 		lm.tabs.getAll().then((v) => (openTabs = v));
 	});
 	const onClearTrash = (e) => {
-		if (e.detail !== 4) {
+		const isConfirm = confirm('Are you sure? You cannot restore this action.');
+
+		if (!isConfirm) {
 			return;
 		}
 		linksTrash.clear();
@@ -33,6 +37,15 @@
 		<span>Link Memory</span>
 	</div>
 	<div class="actions">
+		<a
+			class="github-link"
+			href="https://github.com/krishna-suwal/link-memory-extension"
+			target="_blank"
+		>
+			<img src={githubIconUrl} alt="GitHub Icon" />
+			<span>GitHub</span>
+		</a>
+
 		<button class="clear-trash" on:click={onClearTrash}>Clear Trash</button>
 		<span class="restore" on:click={onClickRestore}>
 			<RestoreIcon height="14px" fill="white" />
@@ -56,6 +69,21 @@
 		.actions {
 			display: flex;
 			align-items: center;
+
+			.github-link {
+				display: flex;
+				align-items: center;
+				color: #d6d6d6;
+				font-size: 12px;
+				text-decoration: none;
+				margin-right: 4px;
+
+				img {
+					margin-right: 4px;
+					width: 16px;
+					height: 16px;
+				}
+			}
 
 			.clear-trash {
 				border: none;
