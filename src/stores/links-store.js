@@ -36,7 +36,11 @@ export const links = (function () {
 			update((list) => {
 				const newLinks = [...list, newItem];
 
-				storageManager.set('limem_links', newLinks);
+				storageManager.set('limem_links', newLinks).catch((reason) => {
+					console.log(`Current limit: ${list.length}`);
+					alert(reason);
+					set([...list]);
+				});
 				return newLinks;
 			});
 			return newItem;
@@ -46,7 +50,11 @@ export const links = (function () {
 				const removedItem = list.find((item) => item.id === id);
 				const newLinks = list.filter((item) => item.id !== id);
 
-				storageManager.set('limem_links', newLinks);
+				storageManager.set('limem_links', newLinks).catch((reason) => {
+					console.log(`Current links limit: ${list.length}`);
+					alert(reason);
+					set([...list]);
+				});
 				linksTrash.add(removedItem);
 				return newLinks;
 			});
@@ -79,7 +87,15 @@ export const linksTrash = (function () {
 				const newItem = { id: uuidv4(), label, url, image_url };
 				const newList = [...list, newItem];
 
-				storageManager.set('limem_links_trash', newList);
+				storageManager.set('limem_links_trash', newList).catch((reason) => {
+					console.log(`Current limit trash: ${list.length}`);
+
+					list = [...list];
+					list.shift();
+					list = [...list, newItem];
+
+					set(list);
+				});
 				return newList;
 			});
 		},

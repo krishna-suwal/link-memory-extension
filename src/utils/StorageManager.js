@@ -34,9 +34,27 @@ class StorageManager {
 			if (typeof value !== 'string') value = JSON.stringify(value);
 
 			chrome.storage.sync.set({ [key]: value }, () => {
+				if (chrome.runtime.lastError) {
+					/**
+					 * Reference for this error type checking method:
+					 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#differentiate_between_similar_errors
+					 */
+					if (
+						'QUOTA_BYTES_PER_ITEM quota exceeded' ===
+						chrome.runtime.lastError.message
+					) {
+						return reject(
+							'Storage limit exceeded. Storage limit is set by your browser. Current limit might be 1MB.'
+						);
+					} else {
+						return reject(chrome.runtime.lastError.message);
+					}
+				}
+
 				_this.get(key).then((value) => {
 					callUpdateListeners(key, value);
 				});
+
 				resolve();
 			});
 		});
