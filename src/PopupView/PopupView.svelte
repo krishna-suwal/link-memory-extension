@@ -8,14 +8,32 @@
 	import PlusIcon from '../icons/PlusIcon.svelte';
 	import TrashIcon from '../icons/TrashIcon.svelte';
 	import LinkItem from '../shared/components/LinkItem.svelte';
-	import { isFetchingLinks, links } from '../stores/links-store';
+	import { isFetchingLinks, links, linksTrash } from '../stores/links-store';
 	import Header from './components/Header.svelte';
 
+	let isFetchingTabs = true;
 	let openTabs = [];
 
 	onMount(() => {
-		lm.tabs.getAll().then((v) => (openTabs = v));
+		lm.tabs.getAll().then((v) => {
+			openTabs = v;
+			isFetchingTabs = false;
+		});
 		lm.init_clipboard_js();
+
+		setTimeout(() => {
+			storageManager.get('limem_links', []).then((list) => {
+				if (Array.isArray(list)) {
+					links.set(list);
+				}
+				isFetchingLinks.set(false);
+			});
+			storageManager.get('limem_links_trash', []).then((list) => {
+				if (Array.isArray(list)) {
+					linksTrash.set(list);
+				}
+			});
+		}, 10);
 	});
 	const onAddCurrentTab = () => {
 		lm.tabs.getActive().then((tab) => {
@@ -87,19 +105,31 @@
 			<span>Open Tabs</span>
 		</div>
 		<div class="list">
-			{#each openTabs as { id, label, url, image_url } (id)}
-				<LinkItem id={`open-tab-${id}`} {label} thumbnail={image_url} {url}>
-					<svelte:fragment slot="actions">
-						<div
-							class="action"
-							title="Add"
-							on:click={getAddOpenTabHandler({ id, label, url, image_url })}
-						>
-							<PlusIcon />
-						</div>
-					</svelte:fragment>
-				</LinkItem>
-			{/each}
+			{#if isFetchingTabs}
+				<Row padding="2px 8px">
+					<Box width="100%" height="50px" />
+				</Row>
+				<Row padding="2px 8px">
+					<Box width="100%" height="50px" />
+				</Row>
+				<Row padding="2px 8px">
+					<Box width="100%" height="50px" />
+				</Row>
+			{:else}
+				{#each openTabs as { id, label, url, image_url } (id)}
+					<LinkItem id={`open-tab-${id}`} {label} thumbnail={image_url} {url}>
+						<svelte:fragment slot="actions">
+							<div
+								class="action"
+								title="Add"
+								on:click={getAddOpenTabHandler({ id, label, url, image_url })}
+							>
+								<PlusIcon />
+							</div>
+						</svelte:fragment>
+					</LinkItem>
+				{/each}
+			{/if}
 		</div>
 	</div>
 </div>

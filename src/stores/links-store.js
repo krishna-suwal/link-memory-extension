@@ -114,15 +114,3 @@ export const linksTrash = (function () {
 
 storageManager.onUpdate('limem_links', links.set, 'store-update');
 storageManager.onUpdate('limem_links_trash', linksTrash.set, 'store-update');
-
-storageManager.get('limem_links', []).then((list) => {
-	if (Array.isArray(list)) {
-		links.set(list);
-	}
-	isFetchingLinks.set(false);
-});
-storageManager.get('limem_links_trash', []).then((list) => {
-	if (Array.isArray(list)) {
-		linksTrash.set(list);
-	}
-});

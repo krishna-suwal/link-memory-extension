@@ -47,7 +47,7 @@
 		</a>
 
 		<button class="clear-trash" on:click={onClearTrash}>Clear Trash</button>
-		<span class="restore" on:click={onClickRestore}>
+		<span class="restore" on:click={onClickRestore} title="Restore">
 			<RestoreIcon height="14px" fill="white" />
 		</span>
 	</div>
