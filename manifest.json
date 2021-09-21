@@ -3,7 +3,7 @@
 
   "name": "Link Memory",
   "description": "Instead of keeping a lot of tabs pinned or open, add them here. You can easily add, access, remove the tabs or links you save here.",
-  "version": "0.1.1",
+  "version": "0.1.2",
 
   "browser_action": {
     "default_popup": "popup-view.html"
