@@ -1,3 +1,5 @@
+import getTabFeatureImage from '../helpers/getTabFeatureImage';
+
 export class TabsManager {
 	getAll() {
 		return new Promise((resolve, reject) => {

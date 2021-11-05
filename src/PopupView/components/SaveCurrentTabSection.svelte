@@ -42,7 +42,7 @@
 <style type="text/scss">
 	.add-current-tab {
 		width: 100%;
-		background: #c5c5c5cc;
+		background: #d6d6d6;
 		border: none;
 		padding: 8px;
 		cursor: pointer;

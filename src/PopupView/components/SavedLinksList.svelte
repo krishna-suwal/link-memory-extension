@@ -67,7 +67,7 @@
 		{:else}
 			<div class="empty-storage-notice">
 				<span>
-					There are no saved tabs. Go to
+					You don't have any saved tabs. Go to
 					<a href="#" on:click|preventDefault={() => onChangeTab('open-tabs')}>
 						Open Tabs
 					</a>

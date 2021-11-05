@@ -11,8 +11,6 @@
 
 	let activeTab = 'saved';
 	let tabsBoxShadow = '0 3px 1px -2px #cbcbcb69';
-	const githubIconUrl =
-		'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/600px-Octicons-mark-github.svg.png';
 
 	onMount(() => {
 		init_clipboard_js();
