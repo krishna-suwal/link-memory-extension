@@ -9,6 +9,7 @@
 	import { isFetchingLinks, links } from '../stores/links-store';
 
 	let activeTab = 'saved';
+	let tabsBoxShadow = '0 3px 1px -2px #cbcbcb69';
 
 	onMount(() => {
 		init_clipboard_js();
@@ -16,37 +17,49 @@
 </script>
 
 <Header />
-<div class="tabs">
-	<div
-		class="tab"
-		class:active={activeTab === 'saved'}
-		on:click={() => (activeTab = 'saved')}
-	>
-		<span>Saved</span>
-		<span class="number-badge">
-			{#if $isFetchingLinks}
-				...
-			{:else}
-				{$links.length}
-			{/if}
-		</span>
-	</div>
-	<div
-		class="tab"
-		class:active={activeTab === 'open-tabs'}
-		on:click={() => (activeTab = 'open-tabs')}
-	>
-		<span>Open Tabs</span>
-	</div>
-	<div
-		class="tab"
-		class:active={activeTab === 'more'}
-		on:click={() => (activeTab = 'more')}
-	>
-		<span>More</span>
+<div class="tabs-container">
+	<div class="tabs" style={`box-shadow: ${tabsBoxShadow};`}>
+		<div
+			class="tab"
+			class:active={activeTab === 'saved'}
+			on:click={() => (activeTab = 'saved')}
+		>
+			<span>Saved</span>
+			<span class="number-badge">
+				{#if $isFetchingLinks}
+					...
+				{:else}
+					{$links.length}
+				{/if}
+			</span>
+		</div>
+		<div
+			class="tab"
+			class:active={activeTab === 'open-tabs'}
+			on:click={() => (activeTab = 'open-tabs')}
+		>
+			<span>Open Tabs</span>
+		</div>
+		<div
+			class="tab"
+			class:active={activeTab === 'more'}
+			on:click={() => (activeTab = 'more')}
+		>
+			<span>More</span>
+		</div>
 	</div>
 </div>
-<div class="lists-wrapper">
+<div class="tabs-placeholder" />
+<div
+	class="lists-wrapper"
+	on:scroll={(e) => {
+		if (e.target.scrollTop > 10) {
+			tabsBoxShadow = '0 3px 9px -6px black';
+		} else {
+			tabsBoxShadow = '0 3px 1px -2px #cbcbcb69';
+		}
+	}}
+>
 	{#if activeTab === 'saved'}
 		<SavedLinksList onChangeTab={(tab) => (activeTab = tab)} />
 	{:else if activeTab === 'open-tabs'}
@@ -56,6 +69,12 @@
 <SaveCurrentTabSection />
 
 <style type="text/scss">
+	.tabs-container {
+		position: relative;
+	}
+	.tabs-placeholder {
+		height: 30px;
+	}
 	.tabs {
 		display: flex;
 		flex-direction: row;
@@ -63,7 +82,12 @@
 		font-size: 12px;
 		padding: 0 8px;
 		color: #767676;
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
 		box-shadow: 0 3px 9px -6px black;
+		transition: 0.2s;
 
 		.tab {
 			height: 30px;
