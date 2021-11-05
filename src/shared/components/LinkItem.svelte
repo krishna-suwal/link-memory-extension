@@ -29,7 +29,7 @@
 		display: flex;
 		/* box-shadow: 0 0 3px 1px #2d0d4a; */
 		padding: 6px 8px;
-		margin: 5px;
+		margin: 8px;
 		background: #f3f3f3;
 
 		.thumbnail {

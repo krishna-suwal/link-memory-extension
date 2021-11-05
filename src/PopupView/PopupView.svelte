@@ -1,165 +1,90 @@
 <script>
 	import { onMount } from 'svelte';
-	import Box from '../shared/components/Skeleton/Box.svelte';
-	import Row from '../shared/components/Skeleton/Row.svelte';
 
-	import CopyLinkIcon from '../icons/CopyLinkIcon.svelte';
-	import OpenLinkIcon from '../icons/OpenLinkIcon.svelte';
-	import PlusIcon from '../icons/PlusIcon.svelte';
-	import TrashIcon from '../icons/TrashIcon.svelte';
-	import LinkItem from '../shared/components/LinkItem.svelte';
-	import { isFetchingLinks, links, linksTrash } from '../stores/links-store';
 	import Header from './components/Header.svelte';
-	import { lm } from '../core/global-module';
 	import { init_clipboard_js } from '../helpers/init_clipboard_js';
-	import { scrollIntoView } from '../utils/scrollIntoView';
+	import SavedLinksList from './components/SavedLinksList.svelte';
+	import OpenTabsList from './components/OpenTabsList.svelte';
+	import SaveCurrentTabSection from './components/SaveCurrentTabSection.svelte';
 
-	let isFetchingTabs = true;
-	let openTabs = [];
+	let activeTab = 'saved';
 
 	onMount(() => {
-		lm.tabs.getAll().then((v) => {
-			openTabs = v;
-			isFetchingTabs = false;
-		});
 		init_clipboard_js();
-
-		setTimeout(() => {
-			lm.storage.get('limem_links', []).then((list) => {
-				if (Array.isArray(list)) {
-					links.set(list);
-				}
-				isFetchingLinks.set(false);
-			});
-			lm.storage.get('limem_links_trash', []).then((list) => {
-				if (Array.isArray(list)) {
-					linksTrash.set(list);
-				}
-			});
-		}, 10);
 	});
-	const onAddCurrentTab = () => {
-		lm.tabs.getActive().then((tab) => {
-			const { id } = links.add(tab);
-
-			setTimeout(() => {
-				scrollIntoView(`#saved-link-${id}`);
-				init_clipboard_js();
-			}, 200);
-		});
-	};
-	const getAddOpenTabHandler = (tab) => () => {
-		const { id } = links.add(tab);
-
-		setTimeout(() => {
-			scrollIntoView(`#saved-link-${id}`);
-			init_clipboard_js();
-		}, 200);
-	};
 </script>
 
 <Header />
-<div class="lists-wrapper">
-	<div class="links-list">
-		{#if $isFetchingLinks}
-			<Row padding="2px 8px">
-				<Box width="100%" height="50px" />
-			</Row>
-			<Row padding="2px 8px">
-				<Box width="100%" height="50px" />
-			</Row>
-			<Row padding="2px 8px">
-				<Box width="100%" height="50px" />
-			</Row>
-		{:else}
-			{#each $links as { id, label, url, image_url } (id)}
-				<LinkItem id={`saved-link-${id}`} {label} thumbnail={image_url} {url}>
-					<svelte:fragment slot="actions">
-						<div
-							class="action"
-							title="Open in new tab"
-							on:click={() => lm.tabs.openNew(url)}
-						>
-							<OpenLinkIcon />
-						</div>
-						<div
-							title="Copy"
-							class="action copy-text tooltip"
-							data-clipboard-text={url}
-						>
-							<CopyLinkIcon />
-							<span class="tooltiptext">Copied!</span>
-						</div>
-						<div
-							title="Delete"
-							class="action"
-							on:click={() => links.remove(id)}
-						>
-							<TrashIcon />
-						</div>
-					</svelte:fragment>
-				</LinkItem>
-			{/each}
-		{/if}
-	</div>
-
-	<div class="open-tabs-list">
-		<div class="list-header">
-			<span>Open Tabs</span>
-		</div>
-		<div class="list">
-			{#if isFetchingTabs}
-				<Row padding="2px 8px">
-					<Box width="100%" height="50px" />
-				</Row>
-				<Row padding="2px 8px">
-					<Box width="100%" height="50px" />
-				</Row>
-				<Row padding="2px 8px">
-					<Box width="100%" height="50px" />
-				</Row>
-			{:else}
-				{#each openTabs as { id, label, url, image_url } (id)}
-					<LinkItem id={`open-tab-${id}`} {label} thumbnail={image_url} {url}>
-						<svelte:fragment slot="actions">
-							<div
-								class="action"
-								title="Add"
-								on:click={getAddOpenTabHandler({ id, label, url, image_url })}
-							>
-								<PlusIcon />
-							</div>
-						</svelte:fragment>
-					</LinkItem>
-				{/each}
-			{/if}
-		</div>
-	</div>
-</div>
-
-<div class="add-current-tab-btn-container">
-	<button class="add-current-tab" on:click={onAddCurrentTab}
-		>Add Current Tab</button
+<div class="tabs">
+	<div
+		class="tab"
+		class:active={activeTab === 'saved'}
+		on:click={() => (activeTab = 'saved')}
 	>
+		<span>Saved</span>
+		<span class="number-badge">15</span>
+	</div>
+	<div
+		class="tab"
+		class:active={activeTab === 'open-tabs'}
+		on:click={() => (activeTab = 'open-tabs')}
+	>
+		<span>Open Tabs</span>
+	</div>
+	<div
+		class="tab"
+		class:active={activeTab === 'more'}
+		on:click={() => (activeTab = 'more')}
+	>
+		<span>More</span>
+	</div>
 </div>
+<div class="lists-wrapper">
+	{#if activeTab === 'saved'}
+		<SavedLinksList onChangeTab={(tab) => (activeTab = tab)} />
+	{:else if activeTab === 'open-tabs'}
+		<OpenTabsList />
+	{:else if activeTab === 'more'}{/if}
+</div>
+<SaveCurrentTabSection />
 
 <style type="text/scss">
+	.tabs {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		font-size: 12px;
+		padding: 0 8px;
+		color: #767676;
+		box-shadow: 0 3px 9px -6px black;
+
+		.tab {
+			height: 30px;
+			display: flex;
+			align-items: center;
+			cursor: pointer;
+			padding: 0 8px;
+			border-bottom: 2px solid transparent;
+
+			&.active {
+				color: #393939;
+				border-bottom: 2px solid #9070e2;
+			}
+			&:hover {
+				color: #393939;
+			}
+			.number-badge {
+				color: #9070e2;
+				background: #f3f3f3;
+				border-radius: 100%;
+				padding: 2px 5px;
+				margin-left: 4px;
+			}
+		}
+	}
 	.lists-wrapper {
 		max-height: 400px;
 		overflow-y: auto;
-
-		.list-header {
-			padding: 0px 12px;
-			margin-top: 10px;
-			font-weight: bold;
-		}
-	}
-
-	.add-current-tab {
-		width: 100%;
-		background: #c5c5c5cc;
-		border: none;
-		padding: 8px;
-		cursor: pointer;
+		padding-top: 5px;
 	}
 </style>

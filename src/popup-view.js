@@ -3,8 +3,10 @@ import { bootstrap } from './bootstrap/bootstrap';
 
 bootstrap();
 
-const app = new PopupView({
-	target: document.body,
-});
+const root = document.getElementById('root');
 
-export default app;
+if (root) {
+	new PopupView({
+		target: root,
+	});
+}

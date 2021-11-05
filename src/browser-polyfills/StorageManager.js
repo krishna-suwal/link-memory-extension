@@ -25,7 +25,7 @@ export class StorageManager {
 				} catch (error) {
 					reject(error);
 				}
-			}, 2000);
+			}, 500);
 		});
 	}
 	set(key, value) {
