@@ -36,6 +36,7 @@
 <div class="header">
 	<div class="title">
 		<span>Link Memory</span>
+		<span class="version">1.0.0</span>
 	</div>
 	<div class="actions">
 		<a
@@ -66,6 +67,10 @@
 		.title {
 			text-align: center;
 			flex-grow: 1;
+		}
+		.version {
+			color: #d3d3d3;
+			font-size: 10px;
 		}
 		.actions {
 			display: flex;

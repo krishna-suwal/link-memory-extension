@@ -66,13 +66,13 @@
 			</LinkItem>
 		{:else}
 			<div class="empty-storage-notice">
-				<span
-					>There is no saved tabs. Go to <a
-						href="#"
-						on:click|preventDefault={() => onChangeTab('open-tabs')}
-						>Open Tabs</a
-					> tab or click on the "Save Current Tab" button below.</span
-				>
+				<span>
+					There are no saved tabs. Go to
+					<a href="#" on:click|preventDefault={() => onChangeTab('open-tabs')}>
+						Open Tabs
+					</a>
+					tab or click on the "Save Current Tab" button below to save tabs.
+				</span>
 			</div>
 		{/each}
 	{/if}
