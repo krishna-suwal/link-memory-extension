@@ -9,6 +9,8 @@
 	import { lm } from '../../core/global-module';
 	import { init_clipboard_js } from '../../helpers/init_clipboard_js';
 	import { scrollIntoView } from '../../utils/scrollIntoView';
+	import CheckMarkIcon from '../../icons/CheckMarkIcon.svelte';
+	import FlagRender from '../../shared/components/FlagRender.svelte';
 
 	let isFetchingTabs = true;
 	let openTabs = [];
@@ -45,13 +47,27 @@
 			{#each openTabs as { id, label, url, image_url } (id)}
 				<LinkItem id={`open-tab-${id}`} {label} thumbnail={image_url} {url}>
 					<svelte:fragment slot="actions">
-						<div
-							class="action"
-							title="Add"
-							on:click={getAddOpenTabHandler({ id, label, url, image_url })}
-						>
-							<PlusIcon />
-						</div>
+						<FlagRender let:flag={isAdded} let:setFlag defaultValue={false}>
+							{#if isAdded}
+								<div class="action">
+									<CheckMarkIcon />
+								</div>
+							{:else}
+								<div
+									class="action"
+									title="Add"
+									on:click={() => {
+										getAddOpenTabHandler({ id, label, url, image_url })();
+										setFlag(true);
+										setTimeout(() => {
+											setFlag(false);
+										}, 2000);
+									}}
+								>
+									<PlusIcon />
+								</div>
+							{/if}
+						</FlagRender>
 					</svelte:fragment>
 				</LinkItem>
 			{/each}
