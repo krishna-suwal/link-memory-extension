@@ -10,6 +10,9 @@
 	import LinkItem from '../shared/components/LinkItem.svelte';
 	import { isFetchingLinks, links, linksTrash } from '../stores/links-store';
 	import Header from './components/Header.svelte';
+	import { lm } from '../core/global-module';
+	import { init_clipboard_js } from '../helpers/init_clipboard_js';
+	import { scrollIntoView } from '../utils/scrollIntoView';
 
 	let isFetchingTabs = true;
 	let openTabs = [];
@@ -19,16 +22,16 @@
 			openTabs = v;
 			isFetchingTabs = false;
 		});
-		lm.init_clipboard_js();
+		init_clipboard_js();
 
 		setTimeout(() => {
-			storageManager.get('limem_links', []).then((list) => {
+			lm.storage.get('limem_links', []).then((list) => {
 				if (Array.isArray(list)) {
 					links.set(list);
 				}
 				isFetchingLinks.set(false);
 			});
-			storageManager.get('limem_links_trash', []).then((list) => {
+			lm.storage.get('limem_links_trash', []).then((list) => {
 				if (Array.isArray(list)) {
 					linksTrash.set(list);
 				}
@@ -40,8 +43,8 @@
 			const { id } = links.add(tab);
 
 			setTimeout(() => {
-				lm.element.scrollIntoView(`#saved-link-${id}`);
-				lm.init_clipboard_js();
+				scrollIntoView(`#saved-link-${id}`);
+				init_clipboard_js();
 			}, 200);
 		});
 	};
@@ -49,8 +52,8 @@
 		const { id } = links.add(tab);
 
 		setTimeout(() => {
-			lm.element.scrollIntoView(`#saved-link-${id}`);
-			lm.init_clipboard_js();
+			scrollIntoView(`#saved-link-${id}`);
+			init_clipboard_js();
 		}, 200);
 	};
 </script>

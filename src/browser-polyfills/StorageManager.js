@@ -13,7 +13,7 @@ function callUpdateListeners(name, ...args) {
 	});
 }
 
-class StorageManagerEmulator {
+export class StorageManager {
 	get(key, _default = null) {
 		return new Promise((resolve, reject) => {
 			setTimeout(() => {
@@ -48,5 +48,3 @@ class StorageManagerEmulator {
 		onUpdateListeners[key][listenerId] = callback;
 	}
 }
-
-export default StorageManagerEmulator;

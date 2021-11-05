@@ -3,6 +3,7 @@
 
 	import RestoreIcon from '../../icons/RestoreIcon.svelte';
 	import { linksTrash } from '../../stores/links-store';
+	import { scrollIntoView } from '../../utils/scrollIntoView';
 
 	let openTabs = [];
 	const githubIconUrl =
@@ -27,7 +28,7 @@
 		const { id } = await linksTrash.restore();
 
 		setTimeout(() => {
-			lm.element.scrollIntoView(`#saved-link-${id}`);
+			scrollIntoView(`#saved-link-${id}`);
 		}, 200);
 	};
 </script>
