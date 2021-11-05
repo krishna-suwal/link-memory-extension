@@ -7,9 +7,12 @@
 	import OpenTabsList from './components/OpenTabsList.svelte';
 	import SaveCurrentTabSection from './components/SaveCurrentTabSection.svelte';
 	import { isFetchingLinks, links } from '../stores/links-store';
+	import BugIcon from '../icons/BugIcon.svelte';
 
 	let activeTab = 'saved';
 	let tabsBoxShadow = '0 3px 1px -2px #cbcbcb69';
+	const githubIconUrl =
+		'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/600px-Octicons-mark-github.svg.png';
 
 	onMount(() => {
 		init_clipboard_js();
@@ -64,11 +67,70 @@
 		<SavedLinksList onChangeTab={(tab) => (activeTab = tab)} />
 	{:else if activeTab === 'open-tabs'}
 		<OpenTabsList />
-	{:else if activeTab === 'more'}{/if}
+	{:else if activeTab === 'more'}
+		<div class="more-tab">
+			<div class="row">
+				<a
+					class="github-link"
+					href="https://github.com/krishna-suwal/link-memory-extension"
+					target="_blank"
+				>
+					<img src={githubIconUrl} alt="GitHub Icon" />
+					<span>GitHub Repository</span>
+				</a>
+			</div>
+			<div class="row">
+				<a
+					class="report-bug-link"
+					href="https://github.com/krishna-suwal/link-memory-extension/issues/new"
+					target="_blank"
+				>
+					<span class="icon"><BugIcon /></span>
+					<span>Report a bug</span>
+				</a>
+			</div>
+		</div>
+	{/if}
 </div>
 <SaveCurrentTabSection />
 
 <style type="text/scss">
+	.more-tab {
+		padding: 4px 0;
+	}
+	.row {
+		font-size: 14px;
+		padding: 0px 8px;
+		margin: 8px;
+
+		.github-link,
+		.report-bug-link {
+			display: inline-flex;
+			align-items: center;
+			text-decoration: none;
+
+			.icon {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+			}
+			img,
+			.icon {
+				margin-right: 8px;
+				width: 24px;
+				height: 24px;
+			}
+			span {
+				color: black;
+				text-decoration: none;
+				font-weight: bold;
+
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+		}
+	}
 	.tabs-container {
 		position: relative;
 	}
@@ -116,6 +178,6 @@
 	.lists-wrapper {
 		max-height: 400px;
 		overflow-y: auto;
-		padding-top: 5px;
+		// padding-top: 5px;
 	}
 </style>
