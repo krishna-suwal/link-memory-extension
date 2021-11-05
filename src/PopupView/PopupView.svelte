@@ -6,6 +6,7 @@
 	import SavedLinksList from './components/SavedLinksList.svelte';
 	import OpenTabsList from './components/OpenTabsList.svelte';
 	import SaveCurrentTabSection from './components/SaveCurrentTabSection.svelte';
+	import { isFetchingLinks, links } from '../stores/links-store';
 
 	let activeTab = 'saved';
 
@@ -22,7 +23,13 @@
 		on:click={() => (activeTab = 'saved')}
 	>
 		<span>Saved</span>
-		<span class="number-badge">15</span>
+		<span class="number-badge">
+			{#if $isFetchingLinks}
+				...
+			{:else}
+				{$links.length}
+			{/if}
+		</span>
 	</div>
 	<div
 		class="tab"
