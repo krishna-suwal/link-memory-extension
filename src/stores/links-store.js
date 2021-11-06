@@ -17,6 +17,7 @@ export const links = (function () {
 				const newLinks = [...list, newItem];
 
 				lm.storage.set('limem_links', newLinks).catch((reason) => {
+					// eslint-disable-next-line no-console
 					console.log(`Current limit: ${list.length}`);
 					alert(reason);
 					set([...list]);
@@ -31,6 +32,7 @@ export const links = (function () {
 				const newLinks = list.filter((item) => item.id !== id);
 
 				lm.storage.set('limem_links', newLinks).catch((reason) => {
+					// eslint-disable-next-line no-console
 					console.log(`Current links limit: ${list.length}`);
 					alert(reason);
 					set([...list]);
@@ -68,6 +70,7 @@ export const linksTrash = (function () {
 				const newList = [...list, newItem];
 
 				lm.storage.set('limem_links_trash', newList).catch((reason) => {
+					// eslint-disable-next-line no-console
 					console.log(`Current limit trash: ${list.length}`);
 
 					list = [...list];
