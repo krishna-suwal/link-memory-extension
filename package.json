@@ -16,6 +16,7 @@
     "node": ">=10.0.0"
   },
   "scripts": {
+    "start": "yarn svelte:start",
     "svelte:build": "rollup -c",
     "svelte:dev": "rollup -c -w",
     "svelte:start": "sirv public --no-clear",

@@ -1,26 +1,6 @@
 import { writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
-
-const dumyLinksList = [
-	{
-		id: 'adsfdsa',
-		image_url: 'https://avt.mkklcdnv6temp.com/6/v/19-1583499341.jpg',
-		label: 'Google Official Site (Search Engine Site) - Dummy Link Data',
-		url: 'https://google.com',
-	},
-	{
-		id: 'gdhera',
-		label: 'Google Official Site (Search Engine Site) - Dummy Link Data',
-		url: 'https://google.com',
-	},
-	{
-		id: 'gdhhadfwera',
-		label: 'Google Official Site (Search Engine Site) - Dummy Link Data',
-		url: 'https://google.com',
-		image_url:
-			'https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded',
-	},
-];
+import { lm } from '../core/global-module';
 
 export const isFetchingLinks = writable(true);
 export const links = (function () {
@@ -36,7 +16,8 @@ export const links = (function () {
 			update((list) => {
 				const newLinks = [...list, newItem];
 
-				storageManager.set('limem_links', newLinks).catch((reason) => {
+				lm.storage.set('limem_links', newLinks).catch((reason) => {
+					// eslint-disable-next-line no-console
 					console.log(`Current limit: ${list.length}`);
 					alert(reason);
 					set([...list]);
@@ -50,7 +31,8 @@ export const links = (function () {
 				const removedItem = list.find((item) => item.id === id);
 				const newLinks = list.filter((item) => item.id !== id);
 
-				storageManager.set('limem_links', newLinks).catch((reason) => {
+				lm.storage.set('limem_links', newLinks).catch((reason) => {
+					// eslint-disable-next-line no-console
 					console.log(`Current links limit: ${list.length}`);
 					alert(reason);
 					set([...list]);
@@ -72,7 +54,7 @@ export const linksTrash = (function () {
 					return list;
 				}
 				resolve(list.pop());
-				storageManager.set('limem_links_trash', list);
+				lm.storage.set('limem_links_trash', list);
 				return list;
 			});
 		});
@@ -87,7 +69,8 @@ export const linksTrash = (function () {
 				const newItem = { id: uuidv4(), label, url, image_url };
 				const newList = [...list, newItem];
 
-				storageManager.set('limem_links_trash', newList).catch((reason) => {
+				lm.storage.set('limem_links_trash', newList).catch((reason) => {
+					// eslint-disable-next-line no-console
 					console.log(`Current limit trash: ${list.length}`);
 
 					list = [...list];
@@ -100,7 +83,7 @@ export const linksTrash = (function () {
 			});
 		},
 		clear: function () {
-			storageManager.set('limem_links_trash', []);
+			lm.storage.set('limem_links_trash', []);
 		},
 		restore: async function () {
 			const lastItem = await popLastItem();
@@ -112,5 +95,5 @@ export const linksTrash = (function () {
 	};
 })();
 
-storageManager.onUpdate('limem_links', links.set, 'store-update');
-storageManager.onUpdate('limem_links_trash', linksTrash.set, 'store-update');
+lm.storage.onUpdate('limem_links', links.set, 'store-update');
+lm.storage.onUpdate('limem_links_trash', linksTrash.set, 'store-update');

@@ -9,6 +9,7 @@ function getTabFeatureImage(tab) {
 				const lastErr = chrome.runtime.lastError;
 
 				if (lastErr)
+					// eslint-disable-next-line no-console
 					console.log(
 						'tab: ' + tab.id + ' lastError: ' + JSON.stringify(lastErr)
 					);

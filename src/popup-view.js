@@ -1,10 +1,12 @@
-import './core/init-storage-manager';
-import './core/init-core';
-
 import PopupView from './PopupView';
+import { bootstrap } from './bootstrap/bootstrap';
 
-const app = new PopupView({
-	target: document.body,
-});
+bootstrap();
 
-export default app;
+const root = document.getElementById('root');
+
+if (root) {
+	new PopupView({
+		target: root,
+	});
+}
