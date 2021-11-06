@@ -5,7 +5,7 @@
 
 	import PlusIcon from '../../icons/PlusIcon.svelte';
 	import LinkItem from '../../shared/components/LinkItem.svelte';
-	import { links } from '../../stores/links-store';
+	import { links, isFetchingLinks } from '../../stores/links-store';
 	import { lm } from '../../core/global-module';
 	import { init_clipboard_js } from '../../helpers/init_clipboard_js';
 	import { scrollIntoView } from '../../utils/scrollIntoView';
@@ -16,10 +16,12 @@
 	let openTabs = [];
 
 	onMount(() => {
-		lm.tabs.getAll().then((v) => {
-			openTabs = v;
-			isFetchingTabs = false;
-		});
+		setTimeout(() => {
+			lm.tabs.getAll().then((v) => {
+				openTabs = v;
+				isFetchingTabs = false;
+			});
+		}, 0);
 	});
 	const getAddOpenTabHandler = (tab) => () => {
 		const { id } = links.add(tab);
@@ -47,27 +49,29 @@
 			{#each openTabs as { id, label, url, image_url } (id)}
 				<LinkItem id={`open-tab-${id}`} {label} thumbnail={image_url} {url}>
 					<svelte:fragment slot="actions">
-						<FlagRender let:flag={isAdded} let:setFlag defaultValue={false}>
-							{#if isAdded}
-								<div class="action">
-									<CheckMarkIcon />
-								</div>
-							{:else}
-								<div
-									class="action"
-									title="Add"
-									on:click={() => {
-										getAddOpenTabHandler({ id, label, url, image_url })();
-										setFlag(true);
-										setTimeout(() => {
-											setFlag(false);
-										}, 2000);
-									}}
-								>
-									<PlusIcon />
-								</div>
-							{/if}
-						</FlagRender>
+						{#if !$isFetchingLinks}
+							<FlagRender let:flag={isAdded} let:setFlag defaultValue={false}>
+								{#if isAdded}
+									<div class="action">
+										<CheckMarkIcon />
+									</div>
+								{:else}
+									<div
+										class="action"
+										title="Add"
+										on:click={() => {
+											getAddOpenTabHandler({ id, label, url, image_url })();
+											setFlag(true);
+											setTimeout(() => {
+												setFlag(false);
+											}, 2000);
+										}}
+									>
+										<PlusIcon />
+									</div>
+								{/if}
+							</FlagRender>
+						{/if}
 					</svelte:fragment>
 				</LinkItem>
 			{/each}

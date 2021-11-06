@@ -7,26 +7,10 @@
 	import OpenLinkIcon from '../../icons/OpenLinkIcon.svelte';
 	import TrashIcon from '../../icons/TrashIcon.svelte';
 	import LinkItem from '../../shared/components/LinkItem.svelte';
-	import { isFetchingLinks, links, linksTrash } from '../../stores/links-store';
+	import { isFetchingLinks, links } from '../../stores/links-store';
 	import { lm } from '../../core/global-module';
 
 	export let onChangeTab = () => {};
-
-	onMount(() => {
-		setTimeout(() => {
-			lm.storage.get('limem_links', []).then((list) => {
-				if (Array.isArray(list)) {
-					links.set(list);
-				}
-				isFetchingLinks.set(false);
-			});
-			lm.storage.get('limem_links_trash', []).then((list) => {
-				if (Array.isArray(list)) {
-					linksTrash.set(list);
-				}
-			});
-		}, 10);
-	});
 </script>
 
 <div class="links-list">

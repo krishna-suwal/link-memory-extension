@@ -2,27 +2,6 @@ import { writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
 import { lm } from '../core/global-module';
 
-const dumyLinksList = [
-	{
-		id: 'adsfdsa',
-		image_url: 'https://avt.mkklcdnv6temp.com/6/v/19-1583499341.jpg',
-		label: 'Google Official Site (Search Engine Site) - Dummy Link Data',
-		url: 'https://google.com',
-	},
-	{
-		id: 'gdhera',
-		label: 'Google Official Site (Search Engine Site) - Dummy Link Data',
-		url: 'https://google.com',
-	},
-	{
-		id: 'gdhhadfwera',
-		label: 'Google Official Site (Search Engine Site) - Dummy Link Data',
-		url: 'https://google.com',
-		image_url:
-			'https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded',
-	},
-];
-
 export const isFetchingLinks = writable(true);
 export const links = (function () {
 	const { set, subscribe, update } = writable([]);
