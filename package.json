@@ -29,7 +29,8 @@
     "clean": "rimraf *.zip ./dist",
     "lint": "eslint ./src",
     "prettier": "prettier --check ./src ./scripts",
-    "check:code": "yarn lint && yarn prettier"
+    "check:code": "yarn lint && yarn prettier",
+    "release": "yarn install && yarn build &&  yarn bundle"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
