@@ -51,11 +51,12 @@
 		{:else}
 			<div class="empty-storage-notice">
 				<span>
-					You don't have any saved tabs. Go to
+					You don't have any saved tabs. Click on the "Save Current Tab" button
+					below to save currently active tab. Or, go to
 					<a href="#" on:click|preventDefault={() => onChangeTab('open-tabs')}>
 						Open Tabs
 					</a>
-					tab or click on the "Save Current Tab" button below to save tabs.
+					to save other open tabs.
 				</span>
 			</div>
 		{/each}
