@@ -1,6 +1,4 @@
 <script>
-	import { onMount } from 'svelte';
-
 	import RestoreIcon from '../../icons/RestoreIcon.svelte';
 	import { linksTrash } from '../../stores/links-store';
 	import { scrollIntoView } from '../../utils/scrollIntoView';
@@ -32,13 +30,17 @@
 	</div>
 	<div class="actions">
 		<button class="clear-trash" on:click={onClearTrash}>Clear Trash</button>
-		<span class="restore" on:click={onClickRestore} title="Restore">
+		<span
+			class="restore"
+			on:click={onClickRestore}
+			title="Restore a trashed item"
+		>
 			<RestoreIcon height="14px" fill="white" />
 		</span>
 	</div>
 </div>
 
-<style type="text/scss">
+<style lang="scss">
 	.header {
 		background-color: blueviolet;
 		padding: 6px 10px;

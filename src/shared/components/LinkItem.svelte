@@ -44,7 +44,7 @@
 	{/if}
 </div>
 
-<style type="text/scss">
+<style lang="scss">
 	.link-item {
 		display: flex;
 		/* box-shadow: 0 0 3px 1px #2d0d4a; */

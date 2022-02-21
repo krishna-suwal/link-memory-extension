@@ -20,7 +20,7 @@
 	<slot />
 </div>
 
-<style type="text/scss">
+<style lang="scss">
 	.skeleton-row {
 		display: flex;
 		flex-direction: row;

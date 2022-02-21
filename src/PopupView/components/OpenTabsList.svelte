@@ -73,7 +73,7 @@
 								{:else}
 									<div
 										class="action"
-										title="Add"
+										title="Save"
 										on:click={() => {
 											getAddOpenTabHandler(tab)();
 											setFlag(true);

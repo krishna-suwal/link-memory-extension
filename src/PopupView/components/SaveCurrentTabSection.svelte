@@ -47,7 +47,7 @@
 	</FlagRender>
 </div>
 
-<style type="text/scss">
+<style lang="scss">
 	.add-current-tab {
 		width: 100%;
 		background: #d6d6d6;
