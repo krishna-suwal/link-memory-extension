@@ -57,9 +57,11 @@
 			{#each openTabs as tab (tab.tabId)}
 				<LinkItem
 					id={`open-tab-${tab.tabId}`}
-					label={tab.title}
-					thumbnail={tab.featuredImageUrl}
+					title={tab.title}
 					url={tab.url}
+					description={tab.description}
+					featuredImageUrl={tab.featuredImageUrl}
+					faviconUrl={tab.faviconUrl}
 				>
 					<svelte:fragment slot="actions">
 						{#if !$isFetchingLinks}

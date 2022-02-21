@@ -1,70 +1,65 @@
 <script>
-	import BugIcon from '../../icons/BugIcon.svelte';
+	import CopyLinkIcon from '../../icons/CopyLinkIcon.svelte';
+	import OpenLinkIcon from '../../icons/OpenLinkIcon.svelte';
+	import { tabsMod } from '../../modules/tabsMod';
+	import LinkItem from '../../shared/components/LinkItem.svelte';
 
 	const githubIconUrl =
 		'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/600px-Octicons-mark-github.svg.png';
+	const githubUrl = 'https://github.com/krishna-suwal/link-memory-extension';
+	const reportButLink =
+		'https://github.com/krishna-suwal/link-memory-extension/issues/new';
 </script>
 
 <div class="more-tab">
-	<div class="row">
-		<a
-			class="github-link"
-			href="https://github.com/krishna-suwal/link-memory-extension"
-			target="_blank"
-		>
-			<img src={githubIconUrl} alt="GitHub Icon" />
-			<span>GitHub Repository</span>
-		</a>
-	</div>
-	<div class="row">
-		<a
-			class="report-bug-link"
-			href="https://github.com/krishna-suwal/link-memory-extension/issues/new"
-			target="_blank"
-		>
-			<span class="icon"><BugIcon /></span>
-			<span>Report a bug</span>
-		</a>
-	</div>
+	<LinkItem
+		id="github-repo"
+		title="GitHub Repository"
+		description="If you're interested in helping, you can contribute by going to this repository. Any help you can contribute will be greatly appreciated."
+		url={githubUrl}
+		faviconUrl={githubIconUrl}
+	>
+		<svelte:fragment slot="actions">
+			<div
+				class="action"
+				title="Open in new tab"
+				on:click={() => tabsMod.openNew(githubUrl)}
+			>
+				<OpenLinkIcon />
+			</div>
+			<div
+				title="Copy"
+				class="action copy-text tooltip"
+				data-clipboard-text={githubUrl}
+			>
+				<CopyLinkIcon />
+				<span class="tooltiptext">Copied!</span>
+			</div>
+		</svelte:fragment>
+	</LinkItem>
+	<LinkItem
+		id="report"
+		title="Report a bug | Report an issue"
+		description="If you have encountered a bug, want to report something, or want to request for a feature, you can do so in this page."
+		url={reportButLink}
+		faviconUrl="https://cdn1.iconfinder.com/data/icons/social-object-set-2-1/74/27-512.png"
+	>
+		<svelte:fragment slot="actions">
+			<div
+				class="action"
+				title="Open in new tab"
+				on:click={() => tabsMod.openNew(reportButLink)}
+			>
+				<OpenLinkIcon />
+			</div>
+			<div
+				title="Copy"
+				class="action copy-text tooltip"
+				data-clipboard-text={reportButLink}
+			>
+				<CopyLinkIcon />
+				<span class="tooltiptext">Copied!</span>
+			</div>
+		</svelte:fragment>
+	</LinkItem>
 </div>
-
-<style type="text/scss">
-	.more-tab {
-		padding: 1px 0;
-		margin: 8px;
-		background: #f3f3f3;
-	}
-	.row {
-		font-size: 14px;
-		padding: 0px 8px;
-		margin: 8px;
-
-		.github-link,
-		.report-bug-link {
-			display: inline-flex;
-			align-items: center;
-			text-decoration: none;
-
-			.icon {
-				display: inline-flex;
-				align-items: center;
-				justify-content: center;
-			}
-			img,
-			.icon {
-				margin-right: 8px;
-				width: 24px;
-				height: 24px;
-			}
-			span {
-				color: black;
-				text-decoration: none;
-				font-weight: bold;
-
-				&:hover {
-					text-decoration: underline;
-				}
-			}
-		}
-	}
-</style>

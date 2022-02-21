@@ -77,13 +77,22 @@ function getActiveTab(): Promise<chrome.tabs.Tab> {
 		}
 
 		if (chrome.tabs.query) {
-			chrome.tabs.query({ active: true }).then((tabs) => {
-				if (tabs.length > 0) {
-					resolve(tabs[0]);
-				} else {
-					reject(getLastError());
-				}
-			});
+			chrome.tabs
+				.query({ active: true }, (tabs) => {
+					if (tabs.length > 0) {
+						resolve(tabs[0]);
+					} else {
+						reject(getLastError());
+					}
+				})
+				// @ts-ignore
+				?.then((tabs: any) => {
+					if (tabs.length > 0) {
+						resolve(tabs[0]);
+					} else {
+						reject(getLastError());
+					}
+				});
 		} else {
 			// @ts-ignore
 			chrome.tabs.getSelected(undefined, function (tab) {
