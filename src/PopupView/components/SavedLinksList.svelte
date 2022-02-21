@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Box from '../../shared/components/Skeleton/Box.svelte';
 	import Row from '../../shared/components/Skeleton/Row.svelte';
 
@@ -25,20 +25,27 @@
 			<Box width="100%" height="50px" />
 		</Row>
 	{:else}
-		{#each $links as { id, label, url, image_url } (id)}
-			<LinkItem id={`saved-link-${id}`} {label} thumbnail={image_url} {url}>
+		{#each $links as link (link.id)}
+			<LinkItem
+				id={`saved-link-${link.id}`}
+				title={link.label}
+				url={link.url}
+				description={link.description}
+				featuredImageUrl={link.image_url}
+				faviconUrl={link.faviconUrl}
+			>
 				<svelte:fragment slot="actions">
 					<div
 						class="action"
 						title="Open in new tab"
-						on:click={() => tabsMod.openNew(url)}
+						on:click={() => tabsMod.openNew(link.url)}
 					>
 						<OpenLinkIcon />
 					</div>
 					<div
 						title="Copy"
 						class="action copy-text tooltip"
-						data-clipboard-text={url}
+						data-clipboard-text={link.url}
 					>
 						<CopyLinkIcon />
 						<span class="tooltiptext">Copied!</span>
@@ -46,7 +53,7 @@
 					<div
 						title="Delete"
 						class="action"
-						on:click={() => appStorage.removeItem(id)}
+						on:click={() => appStorage.removeItem(link.id)}
 					>
 						<TrashIcon />
 					</div>
