@@ -73,7 +73,7 @@
 	<SaveCurrentTabSection />
 {/if}
 
-<style type="text/scss">
+<style lang="scss">
 	.tabs-container {
 		position: relative;
 	}

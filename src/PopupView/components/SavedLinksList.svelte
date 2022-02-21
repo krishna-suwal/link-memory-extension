@@ -51,7 +51,7 @@
 						<span class="tooltiptext">Copied!</span>
 					</div>
 					<div
-						title="Delete"
+						title="Trash"
 						class="action"
 						on:click={() => appStorage.removeItem(link.id)}
 					>
@@ -77,7 +77,7 @@
 	{/if}
 </div>
 
-<style type="text/scss">
+<style lang="scss">
 	.empty-storage-notice {
 		margin: 8px;
 		padding: 12px 16px;
