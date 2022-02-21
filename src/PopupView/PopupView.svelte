@@ -1,33 +1,19 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 
 	import Header from './components/Header.svelte';
-	import { init_clipboard_js } from '../helpers/init_clipboard_js';
+	import { initClipboardJS } from '../helpers/initClipboardJS';
 	import SavedLinksList from './components/SavedLinksList.svelte';
 	import OpenTabsList from './components/OpenTabsList.svelte';
 	import SaveCurrentTabSection from './components/SaveCurrentTabSection.svelte';
-	import { isFetchingLinks, links, linksTrash } from '../stores/links-store';
+	import { isFetchingLinks, links } from '../stores/links-store';
 	import MoreTab from './components/MoreTab.svelte';
-	import { lm } from '../core/global-module';
 
 	let activeTab = 'saved';
 	let tabsBoxShadow = '0 3px 1px -2px #cbcbcb69';
 
 	onMount(() => {
-		setTimeout(() => {
-			lm.storage.get('limem_links', []).then((list) => {
-				if (Array.isArray(list)) {
-					links.set(list);
-				}
-				isFetchingLinks.set(false);
-			});
-			lm.storage.get('limem_links_trash', []).then((list) => {
-				if (Array.isArray(list)) {
-					linksTrash.set(list);
-				}
-			});
-		}, 0);
-		init_clipboard_js();
+		initClipboardJS();
 	});
 </script>
 

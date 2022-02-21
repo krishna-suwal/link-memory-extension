@@ -5,11 +5,6 @@
 	import { linksTrash } from '../../stores/links-store';
 	import { scrollIntoView } from '../../utils/scrollIntoView';
 
-	let openTabs = [];
-
-	onMount(() => {
-		lm.tabs.getAll().then((v) => (openTabs = v));
-	});
 	const onClearTrash = (e) => {
 		const isConfirm = confirm('Are you sure? You cannot restore this action.');
 

@@ -1,5 +1,4 @@
 <script>
-	import { onMount } from 'svelte';
 	import Box from '../../shared/components/Skeleton/Box.svelte';
 	import Row from '../../shared/components/Skeleton/Row.svelte';
 
@@ -8,7 +7,8 @@
 	import TrashIcon from '../../icons/TrashIcon.svelte';
 	import LinkItem from '../../shared/components/LinkItem.svelte';
 	import { isFetchingLinks, links } from '../../stores/links-store';
-	import { lm } from '../../core/global-module';
+	import { tabsMod } from '../../modules/tabsMod';
+	import { appStorage } from '../../modules/storageMod';
 
 	export let onChangeTab = () => {};
 </script>
@@ -31,7 +31,7 @@
 					<div
 						class="action"
 						title="Open in new tab"
-						on:click={() => lm.tabs.openNew(url)}
+						on:click={() => tabsMod.openNew(url)}
 					>
 						<OpenLinkIcon />
 					</div>
@@ -43,21 +43,28 @@
 						<CopyLinkIcon />
 						<span class="tooltiptext">Copied!</span>
 					</div>
-					<div title="Delete" class="action" on:click={() => links.remove(id)}>
+					<div
+						title="Delete"
+						class="action"
+						on:click={() => appStorage.removeItem(id)}
+					>
 						<TrashIcon />
 					</div>
 				</svelte:fragment>
 			</LinkItem>
 		{:else}
 			<div class="empty-storage-notice">
-				<span>
+				<p>
 					You don't have any saved tabs. Click on the "Save Current Tab" button
 					below to save currently active tab. Or, go to
-					<a href="#" on:click|preventDefault={() => onChangeTab('open-tabs')}>
+					<span
+						class="button-link"
+						on:click|preventDefault={() => onChangeTab('open-tabs')}
+					>
 						Open Tabs
-					</a>
+					</span>
 					to save other open tabs.
-				</span>
+				</p>
 			</div>
 		{/each}
 	{/if}
@@ -73,7 +80,7 @@
 		text-align: center;
 		color: #5a5a5a;
 
-		a {
+		.button-link {
 			color: #9575e9;
 			text-decoration: none;
 			font-weight: bold;
