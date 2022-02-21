@@ -1,5 +1,5 @@
 export function isExtensionEnv() {
-	if (chrome.storage) {
+	if (window.chrome?.storage) {
 		return true;
 	}
 	return false;

@@ -1,19 +1,27 @@
 <script>
-	import { links } from '../../stores/links-store';
-	import { lm } from '../../core/global-module';
-	import { init_clipboard_js } from '../../helpers/init_clipboard_js';
+	import { initClipboardJS } from '../../helpers/initClipboardJS';
 	import { scrollIntoView } from '../../utils/scrollIntoView';
 	import CheckMarkIcon from '../../icons/CheckMarkIcon.svelte';
 	import FlagRender from '../../shared/components/FlagRender.svelte';
+	import { tabsMod } from '../../modules/tabsMod';
+	import { appStorage } from '../../modules/storageMod';
 
 	const onAddCurrentTab = () => {
-		lm.tabs.getActive().then((tab) => {
-			const { id } = links.add(tab);
-
-			setTimeout(() => {
-				scrollIntoView(`#saved-link-${id}`);
-				init_clipboard_js();
-			}, 200);
+		tabsMod.getActiveTabInfo().then((tab) => {
+			appStorage
+				.addNewItem({
+					label: tab.title,
+					description: tab.description,
+					url: tab.url,
+					image_url: tab.featuredImageUrl,
+					faviconUrl: tab.faviconUrl,
+				})
+				.then((data) => {
+					setTimeout(() => {
+						scrollIntoView(`#saved-link-${data.id}`);
+						initClipboardJS();
+					}, 200);
+				});
 		});
 	};
 </script>

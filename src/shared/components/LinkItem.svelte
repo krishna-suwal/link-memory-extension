@@ -8,7 +8,7 @@
 <div class="link-item" {id}>
 	{#if thumbnail && typeof thumbnail === 'string'}
 		<div class="thumbnail">
-			<img src={thumbnail} />
+			<img src={thumbnail} alt="Thumbnail" />
 		</div>
 	{/if}
 	<div class="detail">

@@ -1,5 +1,5 @@
-export function init_clipboard_js() {
-	new ClipboardJS('.copy-text').on('success', function (e) {
+export function initClipboardJS() {
+	new ClipboardJS('.copy-text').on('success', function (e: any) {
 		e.trigger.classList.add('tooltip-visible');
 
 		setTimeout(() => {

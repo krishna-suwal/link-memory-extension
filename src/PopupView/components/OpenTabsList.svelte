@@ -1,35 +1,43 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import Box from '../../shared/components/Skeleton/Box.svelte';
 	import Row from '../../shared/components/Skeleton/Row.svelte';
 
 	import PlusIcon from '../../icons/PlusIcon.svelte';
 	import LinkItem from '../../shared/components/LinkItem.svelte';
-	import { links, isFetchingLinks } from '../../stores/links-store';
-	import { lm } from '../../core/global-module';
-	import { init_clipboard_js } from '../../helpers/init_clipboard_js';
+	import { isFetchingLinks } from '../../stores/links-store';
+	import { initClipboardJS } from '../../helpers/initClipboardJS';
 	import { scrollIntoView } from '../../utils/scrollIntoView';
 	import CheckMarkIcon from '../../icons/CheckMarkIcon.svelte';
 	import FlagRender from '../../shared/components/FlagRender.svelte';
+	import { tabsMod } from '../../modules/tabsMod';
+	import type { TabInfo } from '../../types';
+	import { appStorage } from '../../modules/storageMod';
 
 	let isFetchingTabs = true;
-	let openTabs = [];
+	let openTabs: TabInfo[] = [];
 
 	onMount(() => {
-		setTimeout(() => {
-			lm.tabs.getAll().then((v) => {
-				openTabs = v;
-				isFetchingTabs = false;
-			});
-		}, 0);
+		tabsMod.getAll().then((tabs) => {
+			openTabs = tabs;
+			isFetchingTabs = false;
+		});
 	});
-	const getAddOpenTabHandler = (tab) => () => {
-		const { id } = links.add(tab);
-
-		setTimeout(() => {
-			scrollIntoView(`#saved-link-${id}`);
-			init_clipboard_js();
-		}, 200);
+	const getAddOpenTabHandler = (tab: TabInfo) => () => {
+		appStorage
+			.addNewItem({
+				label: tab.title,
+				description: tab.description,
+				url: tab.url,
+				image_url: tab.featuredImageUrl,
+				faviconUrl: tab.faviconUrl,
+			})
+			.then((data) => {
+				setTimeout(() => {
+					scrollIntoView(`#saved-link-${data.id}`);
+					initClipboardJS();
+				}, 200);
+			});
 	};
 </script>
 
@@ -46,8 +54,13 @@
 				<Box width="100%" height="50px" />
 			</Row>
 		{:else}
-			{#each openTabs as { id, label, url, image_url } (id)}
-				<LinkItem id={`open-tab-${id}`} {label} thumbnail={image_url} {url}>
+			{#each openTabs as tab (tab.tabId)}
+				<LinkItem
+					id={`open-tab-${tab.tabId}`}
+					label={tab.title}
+					thumbnail={tab.featuredImageUrl}
+					url={tab.url}
+				>
 					<svelte:fragment slot="actions">
 						{#if !$isFetchingLinks}
 							<FlagRender let:flag={isAdded} let:setFlag defaultValue={false}>
@@ -60,7 +73,7 @@
 										class="action"
 										title="Add"
 										on:click={() => {
-											getAddOpenTabHandler({ id, label, url, image_url })();
+											getAddOpenTabHandler(tab)();
 											setFlag(true);
 											setTimeout(() => {
 												setFlag(false);
@@ -78,6 +91,3 @@
 		{/if}
 	</div>
 </div>
-
-<style type="text/scss">
-</style>
