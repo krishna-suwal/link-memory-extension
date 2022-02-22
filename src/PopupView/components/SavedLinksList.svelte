@@ -15,14 +15,14 @@
 
 <div class="links-list">
 	{#if $isFetchingLinks}
-		<Row padding="2px 8px">
-			<Box width="100%" height="50px" />
+		<Row margin="8px">
+			<Box width="100%" height="60px" border-radius="0" />
 		</Row>
-		<Row padding="2px 8px">
-			<Box width="100%" height="50px" />
+		<Row margin="8px">
+			<Box width="100%" height="60px" border-radius="0" />
 		</Row>
-		<Row padding="2px 8px">
-			<Box width="100%" height="50px" />
+		<Row margin="8px">
+			<Box width="100%" height="60px" border-radius="0" />
 		</Row>
 	{:else}
 		{#each $links as link (link.id)}
@@ -91,6 +91,7 @@
 			color: #9575e9;
 			text-decoration: none;
 			font-weight: bold;
+			cursor: pointer;
 
 			&:hover {
 				text-decoration: underline;
