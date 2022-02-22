@@ -65,9 +65,9 @@
 				font-size: 12px;
 				font-family: arial;
 				cursor: pointer;
-				padding: 2px 8px;
+				padding: 4px 6px;
 				transition: 0.2s;
-				border-radius: 4px;
+				border-radius: 0px;
 
 				&:hover {
 					background: #ce1b1b;

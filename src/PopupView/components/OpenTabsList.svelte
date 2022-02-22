@@ -44,14 +44,14 @@
 <div class="open-tabs-list">
 	<div class="list">
 		{#if isFetchingTabs}
-			<Row padding="2px 8px">
-				<Box width="100%" height="50px" />
+			<Row margin="8px">
+				<Box width="100%" height="60px" border-radius="0" />
 			</Row>
-			<Row padding="2px 8px">
-				<Box width="100%" height="50px" />
+			<Row margin="8px">
+				<Box width="100%" height="60px" border-radius="0" />
 			</Row>
-			<Row padding="2px 8px">
-				<Box width="100%" height="50px" />
+			<Row margin="8px">
+				<Box width="100%" height="60px" border-radius="0" />
 			</Row>
 		{:else}
 			{#each openTabs as tab (tab.tabId)}
