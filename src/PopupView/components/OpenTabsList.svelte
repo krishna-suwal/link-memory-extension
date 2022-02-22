@@ -37,7 +37,8 @@
 					scrollIntoView(`#saved-link-${data.id}`);
 					initClipboardJS();
 				}, 200);
-			});
+			})
+			.catch(alert);
 	};
 </script>
 

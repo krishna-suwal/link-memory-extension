@@ -19,10 +19,6 @@ function getAllTabsData(): Promise<TabInfo[]> {
 					const tab = tabs[i];
 
 					list.push({
-						/**
-						 * TODO When you close all tabs and open the browser again, the
-						 * first tab's id might be 0. So check if it's really the case.
-						 */
 						tabId: tab.id ? tab.id : chrome.tabs.TAB_ID_NONE,
 						title: tab.title ? tab.title : '',
 						description: await getTabDescription(tab),

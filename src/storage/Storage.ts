@@ -25,18 +25,19 @@ export class Storage {
 				}, 500);
 				return;
 			}
-			// TODO Check if this blocks the runtime. Wrap it with setTimeout if it does.
-			chrome.storage.sync.get([key], function (result) {
-				try {
-					if (result[key]) {
-						resolve(JSON.parse(result[key]));
-					} else {
-						resolve(null);
+			setTimeout(() => {
+				chrome.storage.sync.get([key], function (result) {
+					try {
+						if (result[key]) {
+							resolve(JSON.parse(result[key]));
+						} else {
+							resolve(null);
+						}
+					} catch (error) {
+						return reject(error);
 					}
-				} catch (error) {
-					return reject(error);
-				}
-			});
+				});
+			}, 0);
 		});
 	}
 
@@ -56,26 +57,28 @@ export class Storage {
 				return resolve();
 			}
 
-			chrome.storage.sync.set({ [key]: readyVal }, () => {
-				if (chrome.runtime.lastError) {
-					/**
-					 * Reference for this error type checking method:
-					 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#differentiate_between_similar_errors
-					 */
-					if (
-						'QUOTA_BYTES_PER_ITEM quota exceeded' ===
-						chrome.runtime.lastError.message
-					) {
-						return reject(
-							'Failed to save new item. Storage limit exceeded. Storage limit is set by your browser. Current limit might be 1MB.'
-						);
-					} else {
-						return reject(chrome.runtime.lastError.message);
+			setTimeout(() => {
+				chrome.storage.sync.set({ [key]: readyVal }, () => {
+					if (chrome.runtime.lastError) {
+						/**
+						 * Reference for this error type checking method:
+						 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#differentiate_between_similar_errors
+						 */
+						if (
+							'QUOTA_BYTES_PER_ITEM quota exceeded' ===
+							chrome.runtime.lastError.message
+						) {
+							return reject(
+								'Failed to save new item. Storage limit exceeded. Storage limit is set by your browser. Current limit might be 1MB.'
+							);
+						} else {
+							return reject(chrome.runtime.lastError.message);
+						}
 					}
-				}
-				this.cache[key] = value;
-				resolve();
-			});
+					this.cache[key] = value;
+					resolve();
+				});
+			}, 0);
 		});
 	}
 }
