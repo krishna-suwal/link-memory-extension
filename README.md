@@ -2,6 +2,7 @@
 
 <p align="center">
  <img src="https://github.com/krishna-suwal/link-memory-extension/raw/master/public/assets/images/Screenshot_1.png">
+ <img src="https://github.com/krishna-suwal/link-memory-extension/raw/master/public/assets/images/Screenshot_2.png">
 </p>
 
 ### About
