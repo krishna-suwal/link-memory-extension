@@ -21,7 +21,7 @@
     "svelte:dev": "rollup -c -w",
     "svelte:start": "sirv public --no-clear",
     "prepare:ext": "npx rimraf *.zip ./dist && node ./scripts/prepare.js",
-    "build": "yarn prepare && yarn bundle",
+    "build": "yarn prepare:ext && yarn bundle",
     "rebuild-logos": "node ./scripts/build-icons.js",
     "bundle": "yarn bundle-edge && yarn bundle-chrome && yarn bundle-firefox",
     "bundle-edge": "7z a -tzip link-memory-edge-extension.zip dist",
