@@ -7,14 +7,14 @@
 
 ### About
 
-This extension uses svelte for rendering UI. You can use this extension to save tabs/links instead of keeping them open.
+Save your tabs with this extension instead of leaving them open and letting them slow down your computer.
 
-1. When you click on the extension icon, a popup will appear. And you can add/save your active tabs.
-2. To add current open tab there is a button at the bottom.
-3. To add other active tabs, it will listed at the bottom and you just need to click on the plus icon. The saved tabs/links will be listed at the top.
-4. You can open one of them in a new tab, copy the link or delete it.
-5. You can recover the deleted tabs by clicking on the restore icon at the top right corner.
-6. To clear the trash, just press "Clear Trash" button 4 times.
+1. When you click on the extension icon, a popup will appear. There you can save your open tabs.
+2. To save currently active tab, there is a button at the bottom named "Save Current Tab".
+3. To save other open tabs, go to "Open Tabs" tab. Hover on the item you want to save and click on the plus icon.
+4. After saving your tabs, you can open them in a new tab, copy link or delete them.
+5. You can recover the deleted items by clicking on the restore icon at the top right corner.
+6. To clear the trash, click on "Clear Trash" button.
 
 ### Development
 
@@ -25,23 +25,16 @@ git clone https://github.com/krishna-suwal/link-memory-extension.git
 cd link-memory-extension
 yarn install
 ```
-
-You can directly load the root folder as unpackaged extension for testing on browser.
-
-However it will be easier to work in localhost for things that don't require browser extension API. So to run it on localhost use:
+Run client dev server for svelte.
 
 ```shell
 yarn svelte:dev
 ```
+Copy and rename the `.env.example` file to `.env` and update it accordingly.
 
-Rebuild extension logos from `icons/logo.svg`.
+To test the extension, run `node test.js`. It will open up a browser using `puppeteer` and load up the extension.
+It will also load the extension's popup page.
 
-```shell
-yarn rebuild-logos
-```
+To rebuild extension logos, run `yarn rebuild-logos`.
 
-Zip `dist` folder for upload to Ms Edge Web Store and Firefox. _This script needs ``7z`` command to be available on PATH_. If you're using windows, then you can follow [this link](https://stackoverflow.com/a/18180154/13616962) to install ``7z`` on your system.
-
-```shell
-yarn build
-```
+To make release zip, run `yarn build`. It will generate zip files in the root directory. This script needs ``7z`` command to be available on PATH. If you're using windows, then you can follow [this link](https://stackoverflow.com/a/18180154/13616962) to install ``7z`` on your system.
