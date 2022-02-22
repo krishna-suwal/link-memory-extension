@@ -33,3 +33,4 @@ public/assets/js/popup-view.js
 public/assets/js/popup-view.js.map
 *.zip
 dist
+.env
