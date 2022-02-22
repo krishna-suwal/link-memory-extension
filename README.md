@@ -1,6 +1,6 @@
 <h1 align="center">Link Memory</h1>
 
-<p float="left">
+<p align="center">
  <img src="https://github.com/krishna-suwal/link-memory-extension/raw/develop/public/assets/images/Screenshot_1.png" width="500" >
  <img src="https://github.com/krishna-suwal/link-memory-extension/raw/develop/public/assets/images/Screenshot_2.png" width="500" >
 </p>

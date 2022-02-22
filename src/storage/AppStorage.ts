@@ -11,6 +11,7 @@ export class AppStorage extends Storage {
 	}
 
 	addNewItem(props: {
+		id?: string;
 		label: string;
 		url: string;
 		image_url: string;
@@ -20,7 +21,10 @@ export class AppStorage extends Storage {
 		return new Promise((resolve, reject) => {
 			this.getSavedLinks()
 				.then((list) => {
-					const data: SavedLinkData = { id: uuidv4(), ...props };
+					const data: SavedLinkData = {
+						...props,
+						id: props.id ? props.id : uuidv4(),
+					};
 					const newList = [...list, data];
 
 					this.updateSavedLinks(newList)
@@ -119,6 +123,20 @@ export class AppStorage extends Storage {
 
 	clearTrash(): Promise<void> {
 		return this.updateTrashLinks([]);
+	}
+
+	restoreItem(): Promise<SavedLinkData> {
+		return new Promise((resolve, reject) => {
+			this.popLastTrashItem()
+				.then((item) => {
+					if (item) {
+						this.addNewItem(item).then(resolve).catch(reject);
+					} else {
+						reject('Nothing to restore!');
+					}
+				})
+				.catch(reject);
+		});
 	}
 
 	getTrashLinks(): Promise<SavedLinkData[]> {
