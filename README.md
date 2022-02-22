@@ -1,8 +1,8 @@
 <h1 align="center">Link Memory</h1>
 
 <p align="center">
- <img src="https://github.com/krishna-suwal/link-memory-extension/raw/master/public/assets/images/Screenshot_1.png">
- <img src="https://github.com/krishna-suwal/link-memory-extension/raw/master/public/assets/images/Screenshot_2.png">
+ <img src="https://github.com/krishna-suwal/link-memory-extension/raw/develop/public/assets/images/Screenshot_1.png">
+ <img src="https://github.com/krishna-suwal/link-memory-extension/raw/develop/public/assets/images/Screenshot_2.png">
 </p>
 
 ### About
