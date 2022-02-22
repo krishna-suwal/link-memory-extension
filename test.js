@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const puppeteer = require('puppeteer');
+const path = require('path');
 
 const webpages = [
 	'https://ww2.gogoanimes.org/static/images/logo.png',
@@ -9,8 +10,15 @@ const webpages = [
 ];
 
 (async () => {
-	const paths = `${__dirname}`;
+	const TEST_PROD = process.env.TEST_PROD.toUpperCase() === 'YES';
+	const thisExtensionPath = TEST_PROD
+		? path.resolve(__dirname, 'dist')
+		: __dirname;
+	const paths = `${thisExtensionPath}`;
 
+	if (TEST_PROD) {
+		console.log('-> Testing PRODUCTION code...');
+	}
 	console.log('-> Opening Browser...');
 
 	const browserArgs = [

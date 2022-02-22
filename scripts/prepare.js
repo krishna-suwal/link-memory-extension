@@ -23,9 +23,11 @@ function installDependecies() {
 				if (stderr) {
 					return reject(stderr);
 				}
-				console.log(`stdout: ${stdout}`);
+				console.log(`stdout:\n${stdout}`);
 			})
+			.on('message', console.log)
 			.on('exit', resolve)
+			.on('close', resolve)
 			.on('error', reject);
 	});
 }
@@ -58,6 +60,10 @@ function copyFiles() {
 		{
 			from: path.resolve(__dirname, '..', 'popup-view.html'),
 			to: path.resolve(distPath, 'popup-view.html'),
+		},
+		{
+			from: path.resolve(__dirname, '..', 'background.js'),
+			to: path.resolve(distPath, 'background.js'),
 		},
 		{
 			from: path.resolve(__dirname, '..', 'manifest.json'),
