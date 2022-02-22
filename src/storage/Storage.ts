@@ -28,7 +28,11 @@ export class Storage {
 			// TODO Check if this blocks the runtime. Wrap it with setTimeout if it does.
 			chrome.storage.sync.get([key], function (result) {
 				try {
-					resolve(JSON.parse(result[key]));
+					if (result[key]) {
+						resolve(JSON.parse(result[key]));
+					} else {
+						resolve(null);
+					}
 				} catch (error) {
 					return reject(error);
 				}
