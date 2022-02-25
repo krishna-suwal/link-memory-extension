@@ -18,7 +18,7 @@ Save your tabs with this extension instead of leaving them open and letting them
 
 ### Roadmap
 - Use [lz-string](https://www.npmjs.com/package/lz-string) to compress data
-- As MS Edge hasn't allowed extensions to have unlimited storage, add secondary storage to save links/tabs
+- As MS Edge hasn't allowed extensions to have unlimited storage yet, add secondary storage to save links/tabs
 
 ### Development
 
