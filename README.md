@@ -16,11 +16,11 @@ Save your tabs with this extension instead of leaving them open and letting them
 5. You can recover the deleted items by clicking on the restore icon at the top right corner.
 6. To clear the trash, click on "Clear Trash" button.
 
-### Development
-
-## Roadmap
+### Roadmap
 - Use [lz-string](https://www.npmjs.com/package/lz-string) to compress data
 - As MS Edge haven't allowed extensions to have unlimited storage, add secondary storage to save links/tabs
+
+### Development
 
 Clone this repository and install dependencies
 
