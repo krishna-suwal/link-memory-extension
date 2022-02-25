@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { initClipboardJS } from '../../helpers/initClipboardJS';
 	import { scrollIntoView } from '../../utils/scrollIntoView';
 	import CheckMarkIcon from '../../icons/CheckMarkIcon.svelte';
@@ -6,22 +6,29 @@
 	import { tabsMod } from '../../modules/tabsMod';
 	import { appStorage } from '../../modules/storageMod';
 
-	const onAddCurrentTab = () => {
-		tabsMod.getActiveTabInfo().then((tab) => {
-			appStorage
-				.addNewItem({
-					label: tab.title,
-					description: tab.description,
-					url: tab.url,
-					image_url: tab.featuredImageUrl,
-					faviconUrl: tab.faviconUrl,
-				})
-				.then((data) => {
-					setTimeout(() => {
-						scrollIntoView(`#saved-link-${data.id}`);
-						initClipboardJS();
-					}, 200);
-				});
+	const onAddCurrentTab = (): Promise<boolean> => {
+		return new Promise((resolve) => {
+			tabsMod.getActiveTabInfo().then((tab) => {
+				appStorage
+					.addNewItem({
+						label: tab.title,
+						description: tab.description,
+						url: tab.url,
+						image_url: tab.featuredImageUrl,
+						faviconUrl: tab.faviconUrl,
+					})
+					.then((data) => {
+						setTimeout(() => {
+							scrollIntoView(`#saved-link-${data.id}`);
+							initClipboardJS();
+						}, 200);
+						resolve(true);
+					})
+					.catch((reason) => {
+						resolve(false);
+						alert(reason);
+					});
+			});
 		});
 	};
 </script>
@@ -36,11 +43,14 @@
 			<button
 				class="add-current-tab"
 				on:click={() => {
-					onAddCurrentTab();
-					setFlag(true);
-					setTimeout(() => {
-						setFlag(false);
-					}, 2000);
+					onAddCurrentTab().then((isSuccess) => {
+						if (isSuccess) {
+							setFlag(true);
+							setTimeout(() => {
+								setFlag(false);
+							}, 2000);
+						}
+					});
 				}}>Save Current Tab</button
 			>
 		{/if}

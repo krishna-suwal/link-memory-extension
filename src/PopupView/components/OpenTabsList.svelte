@@ -23,22 +23,28 @@
 			isFetchingTabs = false;
 		});
 	});
-	const getAddOpenTabHandler = (tab: TabInfo) => () => {
-		appStorage
-			.addNewItem({
-				label: tab.title,
-				description: tab.description,
-				url: tab.url,
-				image_url: tab.featuredImageUrl,
-				faviconUrl: tab.faviconUrl,
-			})
-			.then((data) => {
-				setTimeout(() => {
-					scrollIntoView(`#saved-link-${data.id}`);
-					initClipboardJS();
-				}, 200);
-			})
-			.catch(alert);
+	const onAddTab = (tab: TabInfo): Promise<boolean> => {
+		return new Promise((resolve) => {
+			appStorage
+				.addNewItem({
+					label: tab.title,
+					description: tab.description,
+					url: tab.url,
+					image_url: tab.featuredImageUrl,
+					faviconUrl: tab.faviconUrl,
+				})
+				.then((data) => {
+					setTimeout(() => {
+						scrollIntoView(`#saved-link-${data.id}`);
+						initClipboardJS();
+					}, 200);
+					resolve(true);
+				})
+				.catch((reason) => {
+					resolve(false);
+					alert(reason);
+				});
+		});
 	};
 </script>
 
@@ -76,11 +82,14 @@
 										class="action"
 										title="Save"
 										on:click={() => {
-											getAddOpenTabHandler(tab)();
-											setFlag(true);
-											setTimeout(() => {
-												setFlag(false);
-											}, 2000);
+											onAddTab(tab).then((isSuccess) => {
+												if (isSuccess) {
+													setFlag(true);
+													setTimeout(() => {
+														setFlag(false);
+													}, 2000);
+												}
+											});
 										}}
 									>
 										<PlusIcon />

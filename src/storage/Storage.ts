@@ -69,7 +69,7 @@ export class Storage {
 							chrome.runtime.lastError.message
 						) {
 							return reject(
-								'Failed to save new item. Storage limit exceeded. Storage limit is set by your browser. Current limit might be 1MB.'
+								'Failed to save new item. Storage limit exceeded. Storage limit is set by your browser. Current limit might be 1MB. \n\nNote: More capacity will be added in the future.'
 							);
 						} else {
 							return reject(chrome.runtime.lastError.message);
