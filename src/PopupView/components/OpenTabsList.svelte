@@ -7,7 +7,6 @@
 	import LinkItem from '../../shared/components/LinkItem.svelte';
 	import { isFetchingLinks } from '../../stores/links-store';
 	import { initClipboardJS } from '../../helpers/initClipboardJS';
-	import { scrollIntoView } from '../../utils/scrollIntoView';
 	import CheckMarkIcon from '../../icons/CheckMarkIcon.svelte';
 	import FlagRender from '../../shared/components/FlagRender.svelte';
 	import { tabsMod } from '../../modules/tabsMod';
@@ -33,11 +32,8 @@
 					image_url: tab.featuredImageUrl,
 					faviconUrl: tab.faviconUrl,
 				})
-				.then((data) => {
-					setTimeout(() => {
-						scrollIntoView(`#saved-link-${data.id}`);
-						initClipboardJS();
-					}, 200);
+				.then(() => {
+					initClipboardJS();
 					resolve(true);
 				})
 				.catch((reason) => {

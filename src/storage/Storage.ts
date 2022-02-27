@@ -1,43 +1,70 @@
 import { isExtensionEnv } from '../utils/isExtensionEnv';
 
 export class Storage {
+	keys: string[] = [];
 	cache: { [key: string]: any } = {};
+	isLoadedAll: boolean = false;
 
-	get(key: string): Promise<any> {
-		return new Promise((resolve, reject) => {
-			if (Object.keys(this.cache).includes(key)) {
-				return resolve(this.cache[key]);
-			}
+	constructor(props: { keys: string[] }) {
+		this.keys = props.keys;
+	}
 
+	loadAll(): Promise<void> {
+		return new Promise((resolve) => {
 			if (!isExtensionEnv()) {
 				setTimeout(() => {
-					const storedValue = localStorage.getItem(key);
+					this.keys.forEach((key) => {
+						const storedValue = localStorage.getItem(key);
 
-					if (storedValue === null) {
-						return resolve(null);
-					}
+						if (!storedValue) {
+							this.cache[key] = null;
+							return;
+						}
 
-					try {
-						resolve(JSON.parse(storedValue));
-					} catch (error) {
-						reject(error);
-					}
+						try {
+							this.cache[key] = JSON.parse(storedValue);
+						} catch (error) {
+							// @ts-ignore
+							console.error(error);
+						}
+					});
+					this.isLoadedAll = true;
+					resolve();
 				}, 500);
 				return;
 			}
 			setTimeout(() => {
-				chrome.storage.sync.get([key], function (result) {
-					try {
-						if (result[key]) {
-							resolve(JSON.parse(result[key]));
-						} else {
-							resolve(null);
+				chrome.storage.sync.get(this.keys, (result) => {
+					this.keys.forEach((key) => {
+						if (!result[key]) {
+							this.cache[key] = null;
+							return;
 						}
-					} catch (error) {
-						return reject(error);
-					}
+
+						try {
+							this.cache[key] = JSON.parse(result[key]);
+						} catch (error) {
+							// @ts-ignore
+							console.error(error);
+						}
+					});
+					this.isLoadedAll = true;
+					resolve();
 				});
 			}, 0);
+		});
+	}
+
+	get(key: string): Promise<any> {
+		return new Promise(async (resolve, reject) => {
+			if (!this.isLoadedAll) {
+				try {
+					await this.loadAll();
+				} catch (error) {
+					return reject(error);
+				}
+			}
+			resolve(this.cache[key]);
 		});
 	}
 
@@ -69,7 +96,7 @@ export class Storage {
 							chrome.runtime.lastError.message
 						) {
 							return reject(
-								'Failed to save new item. Storage limit exceeded. Storage limit is set by your browser. Current limit might be 1MB. \n\nNote: More capacity will be added in the future.'
+								'Failed to save. Storage limit exceeded. The limit is set by your browser.'
 							);
 						} else {
 							return reject(chrome.runtime.lastError.message);

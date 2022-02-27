@@ -15,6 +15,8 @@
 	onMount(() => {
 		initClipboardJS();
 	});
+
+	// TODO Fix header box shadow with z-index.
 </script>
 
 <Header />
