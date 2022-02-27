@@ -48,7 +48,7 @@
 						data-clipboard-text={link.url}
 					>
 						<CopyLinkIcon />
-						<span class="tooltiptext">Copied!</span>
+						<span class="tooltiptext">Copied Link</span>
 					</div>
 					<div
 						title="Trash"

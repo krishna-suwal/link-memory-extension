@@ -11,17 +11,19 @@ body {
 
 .tooltip .tooltiptext {
 	display: none;
-	background-color: #4e4d4d;
+	background-color: black;
 	color: #fff;
 	text-align: center;
-	border-radius: 6px;
-	padding: 3px 5px;
-	top: -5px;
-	right: 108%;
-	font-size: 14px;
+	padding: 4px 6px;
+	font-size: 12px;
+	font-weight: bold;
+	white-space: nowrap;
+	border-radius: 3px;
 
 	/* Position the tooltip */
 	position: absolute;
+	top: 110%;
+	right: -8px;
 	z-index: 1;
 }
 

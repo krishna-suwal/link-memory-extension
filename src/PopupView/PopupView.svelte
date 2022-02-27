@@ -12,11 +12,7 @@
 	let activeTab = 'saved';
 	let tabsBoxShadow = '0 3px 1px -2px #cbcbcb69';
 
-	onMount(() => {
-		initClipboardJS();
-	});
-
-	// TODO Fix header box shadow with z-index.
+	onMount(initClipboardJS);
 </script>
 
 <Header />
@@ -95,6 +91,7 @@
 		width: 100%;
 		box-shadow: 0 3px 9px -6px black;
 		transition: 0.2s;
+		z-index: 99;
 
 		.tab {
 			height: 30px;

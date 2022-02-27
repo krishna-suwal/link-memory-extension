@@ -33,7 +33,7 @@
 				data-clipboard-text={githubUrl}
 			>
 				<CopyLinkIcon />
-				<span class="tooltiptext">Copied!</span>
+				<span class="tooltiptext">Copied Link</span>
 			</div>
 		</svelte:fragment>
 	</LinkItem>
@@ -58,7 +58,7 @@
 				data-clipboard-text={reportButLink}
 			>
 				<CopyLinkIcon />
-				<span class="tooltiptext">Copied!</span>
+				<span class="tooltiptext">Copied Link</span>
 			</div>
 		</svelte:fragment>
 	</LinkItem>
