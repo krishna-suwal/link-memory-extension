@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
 	import RestoreIcon from '../../icons/RestoreIcon.svelte';
 	import { appStorage } from '../../modules/storageMod';
-	import { linksTrash } from '../../stores/links-store';
 	import { scrollIntoView } from '../../utils/scrollIntoView';
+	import { waitForElement } from '../../utils/waitForElement';
 
-	const onClearTrash = (e) => {
+	const onClearTrash = () => {
 		const isConfirm = confirm('Are you sure? You cannot restore this action.');
 
 		if (!isConfirm) {
@@ -14,14 +14,12 @@
 		alert('Cleared Trash!');
 	};
 	const onClickRestore = async () => {
-		if ($linksTrash.length === 0) {
-			return alert('Nothing to restore!');
-		}
-		const { id } = await appStorage.restoreItem();
-
-		setTimeout(() => {
-			scrollIntoView(`#saved-link-${id}`);
-		}, 200);
+		appStorage
+			.restoreItem()
+			.then(({ id }) => {
+				waitForElement(`#saved-link-${id}`).then(scrollIntoView);
+			})
+			.catch(alert);
 	};
 </script>
 

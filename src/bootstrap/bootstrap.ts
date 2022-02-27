@@ -1,10 +1,5 @@
 import { appStorage } from '../modules/storageMod';
-import {
-	isFetchingLinks,
-	isFetchingTrashLinks,
-	links,
-	linksTrash,
-} from '../stores/links-store';
+import { isFetchingLinks, links } from '../stores/links-store';
 
 export function bootstrap() {
 	appStorage
@@ -16,12 +11,5 @@ export function bootstrap() {
 			isFetchingLinks.set(false);
 		});
 
-	appStorage
-		.getTrashLinks()
-		.then((list) => {
-			linksTrash.set(list);
-		})
-		.finally(() => {
-			isFetchingTrashLinks.set(false);
-		});
+	appStorage.events.addListener('saved-links-changed', links.set);
 }

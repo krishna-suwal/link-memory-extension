@@ -30,3 +30,5 @@ export interface Events extends EventEmitter {
 		callback: (trashLinks: SavedLinkData[]) => void
 	): any;
 }
+
+export interface AppOptions {}

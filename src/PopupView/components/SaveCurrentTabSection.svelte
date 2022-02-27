@@ -5,6 +5,7 @@
 	import FlagRender from '../../shared/components/FlagRender.svelte';
 	import { tabsMod } from '../../modules/tabsMod';
 	import { appStorage } from '../../modules/storageMod';
+	import { waitForElement } from '../../utils/waitForElement';
 
 	const onAddCurrentTab = (): Promise<boolean> => {
 		return new Promise((resolve) => {
@@ -18,10 +19,12 @@
 						faviconUrl: tab.faviconUrl,
 					})
 					.then((data) => {
-						setTimeout(() => {
-							scrollIntoView(`#saved-link-${data.id}`);
-							initClipboardJS();
-						}, 200);
+						waitForElement(`#saved-link-${data.id}`)
+							.then((element) => {
+								scrollIntoView(element);
+								initClipboardJS();
+							})
+							.catch(console.log);
 						resolve(true);
 					})
 					.catch((reason) => {
