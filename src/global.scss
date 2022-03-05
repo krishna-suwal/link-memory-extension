@@ -1,0 +1,30 @@
+button {
+	border: none;
+	background: #d6d6d6;
+	padding: 8px 12px;
+	font-size: 13px;
+	cursor: pointer;
+	outline-offset: 1px;
+
+	&:hover {
+		background: #e1e1e1;
+	}
+	&:focus {
+		outline: 1px solid #bebebe;
+	}
+
+	&.primary-btn {
+		background: #8a2be2;
+		color: white;
+
+		&:hover {
+			background: #9f38ff;
+		}
+		&:focus {
+			outline: 1px solid #8a2be2;
+		}
+		&:disabled {
+			background: #bc82f5;
+		}
+	}
+}

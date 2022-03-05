@@ -8,8 +8,9 @@
 	import SaveCurrentTabSection from './components/SaveCurrentTabSection.svelte';
 	import { isFetchingLinks, links } from '../stores/links-store';
 	import MoreTab from './components/MoreTab.svelte';
+	import Tools from './components/Tools.svelte';
 
-	let activeTab = 'saved';
+	let activeTab = 'tools';
 	let tabsBoxShadow = '0 3px 1px -2px #cbcbcb69';
 
 	onMount(initClipboardJS);
@@ -41,6 +42,13 @@
 		</div>
 		<div
 			class="tab"
+			class:active={activeTab === 'tools'}
+			on:click={() => (activeTab = 'tools')}
+		>
+			<span>Tools</span>
+		</div>
+		<div
+			class="tab"
 			class:active={activeTab === 'more'}
 			on:click={() => (activeTab = 'more')}
 		>
@@ -63,6 +71,8 @@
 		<SavedLinksList onChangeTab={(tab) => (activeTab = tab)} />
 	{:else if activeTab === 'open-tabs'}
 		<OpenTabsList />
+	{:else if activeTab === 'tools'}
+		<Tools />
 	{:else if activeTab === 'more'}
 		<MoreTab />
 	{/if}
