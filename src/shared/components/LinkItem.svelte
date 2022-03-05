@@ -28,7 +28,7 @@
 			{#if faviconUrl}
 				<img class="favicon" src={faviconUrl} alt="" />
 			{/if}
-			<a href={url} title={escAttr(url)}>{url}</a>
+			<a href={url} title={escAttr(url)} on:click|preventDefault>{url}</a>
 		</div>
 	</div>
 	{#if !hideActions}
