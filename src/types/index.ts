@@ -8,6 +8,7 @@ export interface SavedLinkData {
 	description?: string;
 	faviconUrl?: string;
 	storeLocation?: 'sync' | 'local';
+	ed?: boolean; // True if description is encoded. Otherwise false.
 }
 
 export interface TabInfo {

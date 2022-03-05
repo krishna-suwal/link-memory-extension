@@ -1,5 +1,4 @@
 <script lang="ts">
-	import SvelteTooltip from 'svelte-tooltip';
 	import Box from '../../shared/components/Skeleton/Box.svelte';
 	import Row from '../../shared/components/Skeleton/Row.svelte';
 	import CopyLinkIcon from '../../icons/CopyLinkIcon.svelte';
@@ -9,7 +8,6 @@
 	import { isFetchingLinks, links } from '../../stores/links-store';
 	import { tabsMod } from '../../modules/tabsMod';
 	import { appStorage } from '../../modules/storageMod';
-	import QuestionMarkIcon from '../../icons/QuestionMarkIcon.svelte';
 	import InfoIcon from '../../icons/InfoIcon.svelte';
 
 	export let onChangeTab = () => {};

@@ -5,6 +5,8 @@ import { hasKey, isEmpty } from '../utils/utils';
 import { makeArrayDistributionForStore } from '../helpers/makeArrayDistribution';
 import { byteLength } from 'byte-length';
 import { transferLastArrayItem } from '../utils/transferArrayItem';
+import { encodeLinksData } from '../helpers/encodeLinksData';
+import { decodeLinksData } from '../helpers/decodeLinksData';
 
 export class AppStorage extends Storage {
 	events: Events;
@@ -188,7 +190,7 @@ export class AppStorage extends Storage {
 			// Load links from the local storage.
 			await load('limem.local.links', true);
 
-			resolve(list);
+			resolve(decodeLinksData(list));
 		});
 	}
 
@@ -203,6 +205,12 @@ export class AppStorage extends Storage {
 			const dist = makeArrayDistributionForStore('limem_links', list);
 			let syncItems = dist.sync;
 			let localItems = dist.local;
+
+			syncItems = encodeLinksData(syncItems);
+			localItems = encodeLinksData(localItems);
+
+			console.log(syncItems);
+			console.log(localItems);
 
 			try {
 				while (1) {
@@ -231,14 +239,17 @@ export class AppStorage extends Storage {
 					storeLocation: 'local',
 				}));
 
+				syncItems = decodeLinksData(syncItems);
+				localItems = decodeLinksData(localItems);
+
 				this.events.emit('saved-links-changed', [...syncItems, ...localItems]);
 			} catch (error) {
 				console.error(error);
 				reject(error);
 				const dist = makeArrayDistributionForStore('limem_links', prevList);
 
-				await this.set('limem_links', dist.sync);
-				await this.set('limem.local.links', dist.local);
+				await this.set('limem_links', encodeLinksData(dist.sync));
+				await this.set('limem.local.links', encodeLinksData(dist.local));
 				return;
 			}
 			resolve();
