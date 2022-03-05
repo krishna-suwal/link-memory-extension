@@ -5,10 +5,10 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import sveltePreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
-import css from 'rollup-plugin-css-only';
 import preprocess from 'svelte-preprocess'; // Also needs node-sass npm package to be installed
 import path from 'path';
 import { writeFileSync } from 'fs';
+import scss from 'rollup-plugin-scss';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -56,7 +56,7 @@ export default {
 		}),
 		// we'll extract any component CSS out into
 		// a separate file - better for performance
-		css({
+		scss({
 			output: function (styles, styleNodes) {
 				writeFileSync(
 					path.resolve(__dirname, 'public/assets/css/popup-view.css'),

@@ -1,5 +1,6 @@
 import { bootstrap } from './bootstrap/bootstrap';
 import PopupView from './PopupView/PopupView.svelte';
+import './global.scss';
 
 bootstrap();
 
