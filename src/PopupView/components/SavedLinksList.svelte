@@ -8,9 +8,9 @@
 	import { isFetchingLinks, links } from '../../stores/links-store';
 	import { tabsMod } from '../../modules/tabsMod';
 	import { appStorage } from '../../modules/storageMod';
-	import InfoIcon from '../../icons/InfoIcon.svelte';
+	import InfoNotice from '../../shared/components/InfoNotice.svelte';
 
-	export let onChangeTab = () => {};
+	export let onChangeTab = (tab: string) => {};
 
 	$: syncedItems = $links.filter((item) => item.storeLocation !== 'local');
 	$: localItems = $links.filter((item) => item.storeLocation === 'local');
@@ -86,18 +86,15 @@
 					</div>
 					<div class="h-ruler" />
 				</div>
-				<div class="notice">
-					<span class="icon">
-						<InfoIcon fill="rgb(49, 130, 206)" width="16px" height="16px" />
-					</span>
-					<span class="text">
+				<div class="notice-container">
+					<InfoNotice>
 						Following items are being saved in your <strong>
 							local storage
 						</strong>
 						because of insufficient space in <strong>sync storage</strong>.
 						Items stored in local storage will not be synced with your signed in
 						account.
-					</span>
+					</InfoNotice>
 				</div>
 			</div>
 			{#each localItems as link (link.id)}
@@ -189,17 +186,7 @@
 			}
 		}
 	}
-	.notice {
-		display: flex;
-		align-items: center;
+	.notice-container {
 		margin: 0 8px;
-		background: #bee3f8;
-		color: rgb(24 28 36);
-		padding: 12px;
-		font-size: 13px;
-
-		.icon {
-			margin-right: 12px;
-		}
 	}
 </style>
