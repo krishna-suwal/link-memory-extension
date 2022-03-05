@@ -2,18 +2,36 @@ import { Storage } from './Storage';
 import { v4 as uuidv4 } from 'uuid';
 import type { AppOptions, Events, SavedLinkData } from '../types';
 import { hasKey, isEmpty } from '../utils/utils';
-import { chunkArray } from '../utils/chunkArray';
+import { makeArrayDistributionForStore } from '../helpers/makeArrayDistribution';
+import { byteLength } from 'byte-length';
+import { transferLastArrayItem } from '../utils/transferArrayItem';
 
 export class AppStorage extends Storage {
 	events: Events;
 
 	constructor(options: { events: Events }) {
 		super({
-			keys: [
-				'limem_links',
-				'limem_links_1',
-				'limem_links_trash',
-				'limem_options',
+			stores: [
+				{
+					key: 'limem_links',
+					type: 'sync',
+				},
+				{
+					key: 'limem.local.links',
+					type: 'local',
+				},
+				{
+					key: 'limem_links_trash',
+					type: 'sync',
+				},
+				{
+					key: 'limem.sync.options',
+					type: 'sync',
+				},
+				{
+					key: 'limem.local.options',
+					type: 'local',
+				},
 			],
 		});
 		this.events = options.events;
@@ -21,10 +39,10 @@ export class AppStorage extends Storage {
 
 	getOptions(): Promise<AppOptions> {
 		return new Promise((resolve, reject) => {
-			const options: AppOptions = {};
+			const options: AppOptions = { sync: {}, local: {} };
 
 			super
-				.get('limem_options')
+				.getSync('limem.sync.options')
 				.then((value) => {
 					if (isEmpty(value)) {
 						return;
@@ -118,59 +136,6 @@ export class AppStorage extends Storage {
 		return this.updateTrashLinks([]);
 	}
 
-	//-------------------------
-	// Low level.
-	//-------------------------
-
-	getSavedLinks(): Promise<SavedLinkData[]> {
-		return new Promise(async (resolve) => {
-			const list: SavedLinkData[] = [];
-
-			const load = async (key: string) => {
-				try {
-					const value1 = await super.get(key);
-
-					if (Array.isArray(value1)) {
-						value1.forEach((item) => {
-							if (item.id) {
-								list.push(item);
-							}
-						});
-					}
-				} catch (error) {
-					console.error(error);
-				}
-			};
-
-			await load('limem_links');
-			await load('limem_links_1');
-
-			resolve(list);
-		});
-	}
-
-	updateSavedLinks(list: SavedLinkData[]): Promise<void> {
-		return new Promise(async (resolve, reject) => {
-			const prevList = await this.getSavedLinks();
-			const chunks = chunkArray(list, 2);
-
-			try {
-				await super.set('limem_links', chunks[0]);
-				await super.set('limem_links_1', chunks[1]);
-
-				this.events.emit('saved-links-changed', list);
-			} catch (error) {
-				const prevListChunks = chunkArray(prevList, 2);
-
-				await super.set('limem_links', prevListChunks[0]);
-				await super.set('limem_links_1', prevListChunks[1]);
-
-				reject(error);
-			}
-			resolve();
-		});
-	}
-
 	restoreItem(): Promise<SavedLinkData> {
 		return new Promise((resolve, reject) => {
 			this.popLastTrashItem()
@@ -185,12 +150,107 @@ export class AppStorage extends Storage {
 		});
 	}
 
+	//-------------------------
+	// Low level.
+	//-------------------------
+
+	getSavedLinks(): Promise<SavedLinkData[]> {
+		return new Promise(async (resolve) => {
+			const list: SavedLinkData[] = [];
+
+			const load = async (key: string, isLocal = false) => {
+				try {
+					const value = await this.get(key);
+
+					if (Array.isArray(value)) {
+						value.forEach((item) => {
+							if (!item.id) {
+								return;
+							}
+							if (isLocal) {
+								list.push({
+									...item,
+									storeLocation: 'local',
+								});
+							} else {
+								list.push(item);
+							}
+						});
+					}
+				} catch (error) {
+					console.log(error);
+				}
+			};
+
+			// Load links from the sync storage.
+			await load('limem_links');
+
+			// Load links from the local storage.
+			await load('limem.local.links', true);
+
+			resolve(list);
+		});
+	}
+
+	updateSavedLinks(list: SavedLinkData[]): Promise<void> {
+		return new Promise(async (resolve, reject) => {
+			list = list.map((item) => {
+				delete item.storeLocation;
+				return item;
+			});
+
+			const prevList = await this.getSavedLinks();
+			const dist = makeArrayDistributionForStore('limem_links', list);
+			let syncItems = dist.sync;
+			let localItems = dist.local;
+
+			try {
+				while (1) {
+					try {
+						await this.set('limem_links', syncItems);
+						break;
+					} catch (error) {
+						if (error === 'Item quota exceeded') {
+							const result = transferLastArrayItem(
+								syncItems,
+								localItems,
+								'first'
+							);
+
+							syncItems = result.from;
+							localItems = result.to;
+						} else {
+							throw error;
+						}
+					}
+				}
+				await this.set('limem.local.links', localItems);
+
+				localItems = localItems.map((item) => ({
+					...item,
+					storeLocation: 'local',
+				}));
+
+				this.events.emit('saved-links-changed', [...syncItems, ...localItems]);
+			} catch (error) {
+				console.error(error);
+				reject(error);
+				const dist = makeArrayDistributionForStore('limem_links', prevList);
+
+				await this.set('limem_links', dist.sync);
+				await this.set('limem.local.links', dist.local);
+				return;
+			}
+			resolve();
+		});
+	}
+
 	getTrashLinks(): Promise<SavedLinkData[]> {
 		return new Promise((resolve, reject) => {
 			const list: SavedLinkData[] = [];
 
 			super
-				.get('limem_links_trash')
+				.getSync('limem_links_trash')
 				.then((value) => {
 					if (Array.isArray(value)) {
 						value.forEach((item) => {
@@ -208,7 +268,7 @@ export class AppStorage extends Storage {
 	updateTrashLinks(list: SavedLinkData[]): Promise<void> {
 		return new Promise((resolve, reject) => {
 			super
-				.set('limem_links_trash', list)
+				.setSync('limem_links_trash', list)
 				.then(() => {
 					this.events.emit('trash-links-changed', list);
 					resolve();

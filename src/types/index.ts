@@ -7,6 +7,7 @@ export interface SavedLinkData {
 	image_url: string;
 	description?: string;
 	faviconUrl?: string;
+	storeLocation?: 'sync' | 'local';
 }
 
 export interface TabInfo {
@@ -31,4 +32,12 @@ export interface Events extends EventEmitter {
 	): any;
 }
 
-export interface AppOptions {}
+export interface AppOptions {
+	sync: {};
+	local: {};
+}
+
+export type StorageType = {
+	type: 'sync' | 'local';
+	key: string;
+};

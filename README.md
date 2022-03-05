@@ -18,7 +18,7 @@ Save your tabs with this extension instead of leaving them open and letting them
 
 ### Roadmap
 - Use [lz-string](https://www.npmjs.com/package/lz-string) to compress data
-- Add option to download saved links (formats: Plain Text/JSON, html, CSV)
+- Add option to import/export saved links (formats: Plain Text/JSON, html, CSV)
 - Write tests
 
 ### Development

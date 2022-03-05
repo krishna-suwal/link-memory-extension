@@ -17,5 +17,5 @@
     "48": "icons/icon-48.png",
     "128": "icons/icon-128.png"
   },
-  "permissions": ["activeTab", "storage", "tabs", "*://*/*"]
+  "permissions": ["activeTab", "storage", "unlimitedStorage", "tabs", "*://*/*"]
 }
