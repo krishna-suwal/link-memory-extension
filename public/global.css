@@ -1,7 +1,6 @@
 html,
 body {
 	position: relative;
-	width: 100%;
 }
 
 .tooltip {
@@ -43,3 +42,18 @@ body {
 	white-space: nowrap;
 	border-radius: 3px;
 }
+
+/* Options Page CSS */
+
+body.is-options-page {
+	min-width: 100%;
+	min-height: 100%;
+}
+
+.is-options-page .lists-wrapper {
+	max-height: initial !important;
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+/* END */

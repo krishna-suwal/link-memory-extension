@@ -78,6 +78,18 @@ export class AppStorage extends Storage {
 		});
 	}
 
+	addBatch(items: SavedLinkData[]): Promise<void> {
+		return new Promise((resolve, reject) => {
+			this.getSavedLinks()
+				.then((list) => {
+					this.updateSavedLinks([...list, ...items])
+						.then(resolve)
+						.catch(reject);
+				})
+				.catch(reject);
+		});
+	}
+
 	removeItem(id: string): Promise<SavedLinkData> {
 		return new Promise((resolve, reject) => {
 			this.getSavedLinks()

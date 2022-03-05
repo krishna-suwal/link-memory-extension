@@ -17,7 +17,6 @@ Save your tabs with this extension instead of leaving them open and letting them
 6. To clear the trash, click on "Clear Trash" button.
 
 ### Roadmap
-- Add option to import/export saved links (formats: JSON and html)
 - Tool to save links in batch. Write one link per line and add all at once.
 - Write tests
 - Use [lz-string](https://www.npmjs.com/package/lz-string) to compress data

@@ -9,8 +9,10 @@
 	import { isFetchingLinks, links } from '../stores/links-store';
 	import MoreTab from './components/MoreTab.svelte';
 	import Tools from './components/Tools.svelte';
+	import { isOptionsPage } from '../helpers/isOptionsPage';
+	import { getTargetTab } from '../helpers/urlParams';
 
-	let activeTab = 'tools';
+	let activeTab = getTargetTab() ? getTargetTab() : 'saved';
 	let tabsBoxShadow = '0 3px 1px -2px #cbcbcb69';
 
 	onMount(initClipboardJS);
@@ -77,13 +79,16 @@
 		<MoreTab />
 	{/if}
 </div>
-{#if !$isFetchingLinks}
+{#if !$isFetchingLinks && !isOptionsPage()}
 	<SaveCurrentTabSection />
 {/if}
 
 <style lang="scss">
 	.tabs-container {
-		position: relative;
+		position: sticky;
+		position: sticky;
+		top: 0;
+		z-index: 99;
 	}
 	.tabs-placeholder {
 		height: 30px;
@@ -99,6 +104,7 @@
 		left: 0;
 		top: 0;
 		width: 100%;
+		background-color: white;
 		box-shadow: 0 3px 9px -6px black;
 		transition: 0.2s;
 		z-index: 99;
