@@ -62,6 +62,10 @@ function copyFiles() {
 			to: path.resolve(distPath, 'popup-view.html'),
 		},
 		{
+			from: path.resolve(__dirname, '..', 'options.html'),
+			to: path.resolve(distPath, 'options.html'),
+		},
+		{
 			from: path.resolve(__dirname, '..', 'background.js'),
 			to: path.resolve(distPath, 'background.js'),
 		},
